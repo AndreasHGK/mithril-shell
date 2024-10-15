@@ -10,7 +10,10 @@
       nixpkgs,
       flake-utils,
     }:
-    flake-utils.lib.eachDefaultSystem (
+    {
+      homeModules.default = import ./modules/home-manager.nix;
+    }
+    // flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs {
@@ -30,8 +33,6 @@
             bun
           ];
         };
-
-        homeModules.default = import ./modules/home-manager.nix;
       }
     );
 }
