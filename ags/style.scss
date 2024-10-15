@@ -12,7 +12,7 @@
 }
 
 @mixin background-0 {
-  background-color: $mantle;
+  background-color: $background;
 }
 
 @mixin rounded-full {
@@ -38,7 +38,7 @@
     padding-bottom: 0em;
 
     &:hover {
-      box-shadow: inset 0 0 0 100px $surface0;
+      box-shadow: inset 0 0 0 100px $hover;
     }
 
     .workspaces {
@@ -56,7 +56,7 @@
         margin-bottom: -0.20em;
         margin-top: -0.20em;
 
-        background-color: scale-color($surface2, $lightness: 20%);
+        background-color: scale-color($silent, $lightness: 20%);
 
         &.active {
           padding: 0.35em;

@@ -17,7 +17,7 @@ in
       description = ''
         Whether to enable ags-bar. Does not automatically start the bar in your window manager.
       '';
-    };      
+    };
 
     integrations = {
       hyprland.enable = mkOption {
@@ -26,7 +26,15 @@ in
         description = ''
           If enabled, autostarts the bar when hyprland launches.
         '';
-      };      
+      };
+
+      stylix.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          If enabled, uses the stylix color scheme to style the bar.
+        '';
+      };
     };
   };
 
@@ -57,6 +65,24 @@ in
           "systemctl --user start ${service-name}"
         ];
       };
+    };
+
+    home.activation = lib.mkIf (config.stylix.enable && cfg.integrations.stylix.enable) {
+      agsBarStyle =
+        let
+          generateColorschemeScss = colors: ''
+            $text: #${colors.base01};
+            $background: #${colors.base00};
+            $hover: #${colors.base02};
+            $silent: #${colors.base05};
+          '';
+        in
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          echo "Exporting stylix colors for ${service-name}."
+          $DRY_RUN_CMD cat > ${../ags}/colorscheme.scss <<EOF
+          ${generateColorschemeScss config.lib.stylix.colors}
+          EOF
+        '';
     };
   };
 }
