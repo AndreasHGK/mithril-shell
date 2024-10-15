@@ -46,7 +46,7 @@ in
         Restart = "on-failure";
         KillMode = "mixed";
         Environment = [
-          "PATH=${pkgs.sassc}/bin:${pkgs.coreutils}/bin:${pkgs.swaynotificationcenter}/bin"
+          "PATH=${pkgs.bun}/bin:${pkgs.coreutils}/bin:${pkgs.sassc}/bin:${pkgs.swaynotificationcenter}/bin"
         ];
       };
     };
