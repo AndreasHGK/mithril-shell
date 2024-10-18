@@ -30,7 +30,7 @@ in {
       '';
     };
 
-    colorscheme.colors = {
+    theme.colors = {
       text = mkHexColorOption "#cdd6f4";
       background = mkHexColorOption "#181825";
       hover = mkHexColorOption "#313244";
@@ -68,7 +68,7 @@ in {
       };
 
       Service = let
-        generateColorschemeScss = colors: ''
+        generateThemeScss = colors: ''
           \$text: #${colors.text};
           \$background: #${colors.background};
           \$hover: #${colors.hover};
@@ -95,7 +95,7 @@ in {
           installPhase = ''
             mkdir -p $out
             cp -r . $out
-            echo "${generateColorschemeScss colors}" > $out/colorscheme.scss
+            echo "${generateThemeScss colors}" > $out/theme.scss
           '';
         };
       in {

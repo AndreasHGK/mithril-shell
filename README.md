@@ -27,12 +27,12 @@ services.ags-bar.enable = true;
 services.ags-bar.integrations.hyprland.enable = true;
 ```
 
-### Colorschemes
+### Theming
 
 The colorscheme can easily be changed by setting the following attributes.
 
 ```nix
-services.ags-bar.colorscheme.colors = {
+services.ags-bar.theme.colors = {
   text = "#cdd6f4";
   background = "#181825";
   # Color of the ovals drawn around widgets when hovering over them.
