@@ -48,7 +48,7 @@ in {
 
       stylix.enable = mkOption {
         type = types.bool;
-        default = false;
+        default = config.stylix.enable;
         description = ''
           If enabled, uses the stylix color scheme to style the bar.
         '';
