@@ -91,12 +91,15 @@ in {
           ags-config = pkgs.stdenv.mkDerivation {
             name = "ags-config";
             src = ../ags;
+            allowSubstitutes = false;
+            buildPhase = "true";
             installPhase = ''
               mkdir -p $out
               cp -r . $out
               echo "${generateColorschemeScss colors}" > $out/colorscheme.scss
             '';
           };
+
         in {
           ExecStart = "${pkgs.ags}/bin/ags -c ${ags-config}/config.js";
           Restart = "on-failure";
