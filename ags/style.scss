@@ -34,6 +34,20 @@ $flamingo: #f2cdcd;
   border-radius: 9999px;
 }
 
+// Add horizontal space between all direct child elements.
+@mixin space-between-x($space) {
+  >*+* {
+    margin-left: $space;
+  }
+}
+
+// Add vertical space between all direct child elements.
+@mixin space-between-y($space) {
+  >*+* {
+    margin-top: $space;
+  }
+}
+
 .bar {
   @include background-0;
   font-weight: bold;
@@ -103,8 +117,113 @@ $flamingo: #f2cdcd;
 
 .quicksettings {
   @include background-0;
-  @include rounded-full;
+  @include space-between-y(1em);
 
-  padding: 2em;
-  margin: 2em;
+  border-radius: 1.5em;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  margin: 0.25em;
+  min-width: 20em;
+
+  label {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .indicators {
+    @include space-between-x(3em);
+
+    >* {
+      @include space-between-x(0.75em);
+    }
+  }
+
+  .indicator {
+    @include rounded-full;
+
+    background-color: $surface0;
+    padding: 0.625em;
+
+    * {
+      margin-left: unset;
+    }
+  }
+
+  .slider {
+    @include space-between-x(1.5em);
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+
+    scale {
+      * {
+        @include rounded-full;
+      }
+
+      $width: 0.25em;
+
+      trough {
+        min-height: $width;
+        min-width: $width;
+        background-color: $surface0;
+
+        highlight,
+        progress {
+          background-color: $blue;
+          min-height: $width;
+          min-width: $width;
+        }
+      }
+
+      slider {
+        background-color: $text;
+        min-height: $width;
+        min-width: $width;
+        margin: -0.5em;
+      }
+    }
+  }
+
+  .pill-buttons {
+    @include space-between-y(0.5em);
+
+    // Horizontal group of two pill buttons.
+    >box {
+      @include space-between-x(0.75em);
+    }
+
+    .pill-button {
+      @include rounded-full;
+      @include space-between-x(1em);
+
+      background-color: $surface0;
+      padding-left: 1em;
+      padding-right: 1em;
+      min-height: 3em;
+
+      &:checked {
+        background-color: $blue;
+
+        * {
+          color: $mantle;
+        }
+      }
+
+      >box {
+        @include space-between-x(0.5em);
+
+        >box {
+          @include space-between-y(0.1em);
+        }
+      }
+
+      label {
+        font-size: 0.875em;
+
+        &.subtext {
+          font-weight: normal;
+          font-size: 0.775em;
+        }
+      }
+    }
+  }
 }
