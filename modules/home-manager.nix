@@ -56,66 +56,64 @@ in {
     };
   };
 
-  config = let
-    generateColorschemeScss = colors: ''
-      \$text: #${colors.text};
-      \$background: #${colors.background};
-      \$hover: #${colors.hover};
-      \$silent: #${colors.silent};
-    '';
-
-    colors =
-      if cfg.integrations.stylix.enable && config.stylix.enable
-      then let
-        stylixColors = config.lib.stylix.colors;
-      in {
-        text = stylixColors.base05;
-        background = stylixColors.base00;
-        hover = stylixColors.base02;
-        silent = stylixColors.base01;
-      }
-      else cfg.colorscheme.colors;
-  in
-    lib.mkIf cfg.enable {
-      # The systemd user service that is in charge of running the bar. It needs to be manually started
-      # by your desktop environment.
-      systemd.user.services.${service-name} = {
-        Unit = {
-          Description = "Aylur's Gnome Shell";
-          Documentation = "https://aylur.github.io/ags-docs/";
-          PartOf = ["graphical-session.target"];
-          After = ["graphical-session-pre.target"];
-        };
-
-        Service = let
-          ags-config = pkgs.stdenv.mkDerivation {
-            name = "ags-config";
-            src = ../ags;
-            allowSubstitutes = false;
-            buildPhase = "true";
-            installPhase = ''
-              mkdir -p $out
-              cp -r . $out
-              echo "${generateColorschemeScss colors}" > $out/colorscheme.scss
-            '';
-          };
-
-        in {
-          ExecStart = "${pkgs.ags}/bin/ags -c ${ags-config}/config.js";
-          Restart = "on-failure";
-          KillMode = "mixed";
-          Environment = [
-            "PATH=${pkgs.bun}/bin:${pkgs.coreutils}/bin:${pkgs.sassc}/bin:${pkgs.swaynotificationcenter}/bin"
-          ];
-        };
+  config = lib.mkIf cfg.enable {
+    # The systemd user service that is in charge of running the bar. It needs to be manually started
+    # by your desktop environment.
+    systemd.user.services.${service-name} = {
+      Unit = {
+        Description = "Aylur's Gnome Shell";
+        Documentation = "https://aylur.github.io/ags-docs/";
+        PartOf = ["graphical-session.target"];
+        After = ["graphical-session-pre.target"];
       };
 
-      wayland.windowManager.hyprland = lib.mkIf cfg.integrations.hyprland.enable {
-        settings = {
-          exec-once = [
-            "systemctl --user start ${service-name}"
-          ];
+      Service = let
+        generateColorschemeScss = colors: ''
+          \$text: #${colors.text};
+          \$background: #${colors.background};
+          \$hover: #${colors.hover};
+          \$silent: #${colors.silent};
+        '';
+
+        colors =
+          if cfg.integrations.stylix.enable && config.stylix.enable
+          then let
+            stylixColors = config.lib.stylix.colors;
+          in {
+            text = stylixColors.base05;
+            background = stylixColors.base00;
+            hover = stylixColors.base02;
+            silent = stylixColors.base01;
+          }
+          else cfg.colorscheme.colors;
+
+        ags-config = pkgs.stdenv.mkDerivation {
+          name = "ags-config";
+          src = ../ags;
+          allowSubstitutes = false;
+          buildPhase = "true";
+          installPhase = ''
+            mkdir -p $out
+            cp -r . $out
+            echo "${generateColorschemeScss colors}" > $out/colorscheme.scss
+          '';
         };
+      in {
+        ExecStart = "${pkgs.ags}/bin/ags -c ${ags-config}/config.js";
+        Restart = "on-failure";
+        KillMode = "mixed";
+        Environment = [
+          "PATH=${pkgs.bun}/bin:${pkgs.coreutils}/bin:${pkgs.sassc}/bin:${pkgs.swaynotificationcenter}/bin"
+        ];
       };
     };
+
+    wayland.windowManager.hyprland = lib.mkIf cfg.integrations.hyprland.enable {
+      settings = {
+        exec-once = [
+          "systemctl --user start ${service-name}"
+        ];
+      };
+    };
+  };
 }
