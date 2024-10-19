@@ -34,6 +34,7 @@ in
     };
 
     theme.colors = {
+      primary = mkHexColorOption "#cba6f7";
       text = mkHexColorOption "#cdd6f4";
       background = mkHexColorOption "#181825";
       hover = mkHexColorOption "#313244";
@@ -73,6 +74,7 @@ in
       Service =
         let
           generateThemeScss = colors: ''
+            \$primary: #${colors.primary};
             \$text: #${colors.text};
             \$background: #${colors.background};
             \$hover: #${colors.hover};
@@ -85,6 +87,7 @@ in
                 stylixColors = config.lib.stylix.colors;
               in
               {
+                primary = stylixColors.base07;
                 text = stylixColors.base05;
                 background = stylixColors.base00;
                 hover = stylixColors.base02;
