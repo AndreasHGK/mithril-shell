@@ -29,7 +29,7 @@ services.ags-bar.integrations.hyprland.enable = true;
 
 ### Theming
 
-The colorscheme can easily be changed by setting the following attributes.
+The color scheme can easily be changed by setting the following attributes.
 
 ```nix
 services.ags-bar.theme.colors = {
@@ -44,7 +44,7 @@ services.ags-bar.theme.colors = {
 
 #### Stylix integration
 
-If your system is already configured using the stylix home-manager module,
+If your system is already configured using the stylix home-manager module
 the bar will automatically use those colors.
 You can disable this behaviour like so.
 
