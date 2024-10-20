@@ -117,13 +117,13 @@ $flamingo: #f2cdcd;
 
 .quicksettings {
   @include background-0;
-  @include space-between-y(1em);
+  @include space-between-y(1.5em);
 
   border-radius: 1.5em;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   padding: 1em;
   margin: 0.25em;
-  min-width: 20em;
+  min-width: 24em;
 
   label {
     font-weight: bold;
@@ -185,12 +185,16 @@ $flamingo: #f2cdcd;
 
   .pill-buttons {
     .pill-button {
-      @include rounded-full;
-      @include space-between-x(1em);
+      border-top-left-radius: 9999px;
+      border-bottom-left-radius: 9999px;
+
+      // If there is a chevron after the pill button it will be the right part of the pill shape.
+      &:last-child {
+        border-top-right-radius: 9999px;
+        border-bottom-right-radius: 9999px;
+      }
 
       background-color: $surface0;
-      padding-left: 1em;
-      padding-right: 1em;
       min-height: 3em;
 
       &:checked {
@@ -201,8 +205,10 @@ $flamingo: #f2cdcd;
         }
       }
 
-      >box {
+      >box>box {
         @include space-between-x(0.5em);
+        padding-left: 1em;
+        padding-right: 1em;
 
         >box {
           @include space-between-y(0.1em);
@@ -216,6 +222,26 @@ $flamingo: #f2cdcd;
           font-weight: normal;
           font-size: 0.775em;
         }
+      }
+    }
+
+    .chevron {
+      padding-right: 0.75em;
+      padding-left: 0.5em;
+      background-color: mix(white, $surface0, 5%);
+      border-top-right-radius: 9999px;
+      border-bottom-right-radius: 9999px;
+
+      border-left-color: $mantle;
+      border-left-width: 1px;
+      border-left-style: solid;
+    }
+
+    *:checked+.chevron {
+      background-color: mix(white, $blue, 5%);
+
+      * {
+        color: $mantle;
       }
     }
   }
