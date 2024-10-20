@@ -1,3 +1,4 @@
+import Gtk from "gi://Gtk?version=3.0";
 import { Icon } from "lib/types";
 import { Binding } from "types/service";
 
@@ -74,6 +75,7 @@ const PillButton = (props: {
   const main_label = Widget.Label({
     hpack: "start",
     label: props.label,
+    ellipsize: 3,
   });
   const labels = props.subtext === undefined ? [main_label] : props.subtext.as(subtext => {
     const children = [
@@ -86,6 +88,7 @@ const PillButton = (props: {
           hpack: "start",
           className: "subtext",
           label: subtext,
+          ellipsize: 3,
         })
       );
     }
@@ -95,7 +98,7 @@ const PillButton = (props: {
 
   return Widget.ToggleButton({
     className: "pill-button",
-    hexpand: true,
+    hexpand: false,
     active: props.active,
     onToggled: props.onToggled,
     child: Widget.Box({
@@ -185,66 +188,85 @@ export const Quicksettings = () => Widget.Window({
         },
       }),
 
-      Widget.Box({
+      Widget.FlowBox({
         className: "pill-buttons",
-        vertical: true,
-        children: [
-          Widget.Box({
-            vertical: false,
-            hexpand: true,
-            children: [
-              // TODO: arrange these in an actual 'dynamic' grid rather than grouping each pair.
-              PillButton({
-                icon: network.wifi.bind('icon_name'),
-                label: "Wi-Fi",
-                subtext: Utils.merge(
-                  [network.wifi.bind("internet"), network.wifi.bind("ssid")],
-                  (state, ssid) => {
-                    if (state === "disconnected") {
-                      return null;
-                    }
-                    if (state === "connecting") {
-                      return "connecting...";
-                    }
-
-                    return ssid;
-                  },
-                ),
-                active: network.bind("wifi").as(wifi => wifi.enabled),
-                onToggled({ active }) {
-                  if (network.wifi.enabled == active) {
-                    return;
-                  }
-                  network.wifi.enabled = active;
-                },
-              }),
-              PillButton({
-                icon: bluetooth
-                  .bind("enabled")
-                  .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
-                label: "Bluetooth",
-                subtext: bluetooth.bind("connected_devices").as(devices => {
-                  if (devices.length === 0) {
+        setup(self) {
+          // Ensure the children have the same size.
+          self.homogeneous = true;
+          self.hexpand = true;
+          self.min_children_per_line = 2;
+          self.max_children_per_line = 2;
+          self.row_spacing = 12;
+          self.column_spacing = 12;
+          self.add(
+            PillButton({
+              icon: network.wifi.bind('icon_name'),
+              label: "Wi-Fi",
+              subtext: Utils.merge(
+                [network.wifi.bind("internet"), network.wifi.bind("ssid")],
+                (state, ssid) => {
+                  if (state === "disconnected") {
                     return null;
                   }
-                  if (devices.length === 1) {
-                    return devices[0].name;
+                  if (state === "connecting") {
+                    return "connecting...";
                   }
 
-                  return `${devices.length} devices`;
-                }),
-                active: bluetooth.bind("enabled"),
-                onToggled({ active }) {
-                  if (bluetooth.enabled == active) {
-                    return;
-                  }
-                  bluetooth.enabled = active;
+                  return ssid;
                 },
+              ),
+              active: network.bind("wifi").as(wifi => wifi.enabled),
+              onToggled({ active }) {
+                if (network.wifi.enabled == active) {
+                  return;
+                }
+                network.wifi.enabled = active;
+              },
+            }),
+          );
+          self.add(
+            PillButton({
+              icon: bluetooth
+                .bind("enabled")
+                .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
+              label: "Bluetooth",
+              subtext: bluetooth.bind("connected_devices").as(devices => {
+                if (devices.length === 0) {
+                  return null;
+                }
+                if (devices.length === 1) {
+                  return devices[0].name;
+                }
+
+                return `${devices.length} devices`;
               }),
-            ],
-          }),
-        ],
-      }),
+              active: bluetooth.bind("enabled"),
+              onToggled({ active }) {
+                if (bluetooth.enabled == active) {
+                  return;
+                }
+                bluetooth.enabled = active;
+              },
+            }),
+          );
+          self.add(
+            PillButton({
+              icon: "display-brightness-symbolic",
+              label: "Room Lights",
+              active: false,
+              onToggled(event) { },
+            }),
+          );
+          self.add(
+            PillButton({
+              icon: "night-light-symbolic",
+              label: "Night Light",
+              active: false,
+              onToggled(event) { },
+            }),
+          );
+        },
+      })
     ],
   }),
 });

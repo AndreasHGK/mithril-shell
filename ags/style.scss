@@ -184,13 +184,6 @@ $flamingo: #f2cdcd;
   }
 
   .pill-buttons {
-    @include space-between-y(0.5em);
-
-    // Horizontal group of two pill buttons.
-    >box {
-      @include space-between-x(0.75em);
-    }
-
     .pill-button {
       @include rounded-full;
       @include space-between-x(1em);
@@ -217,7 +210,7 @@ $flamingo: #f2cdcd;
       }
 
       label {
-        font-size: 0.875em;
+        font-size: 0.865em;
 
         &.subtext {
           font-weight: normal;
@@ -226,4 +219,5 @@ $flamingo: #f2cdcd;
       }
     }
   }
+
 }
