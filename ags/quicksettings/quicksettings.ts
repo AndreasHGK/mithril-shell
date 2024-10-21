@@ -2,10 +2,13 @@ import Gtk from "gi://Gtk?version=3.0";
 import { Icon } from "lib/types";
 import { FlowBoxChild } from "types/@girs/gtk-3.0/gtk-3.0.cjs";
 import { Binding } from "types/service";
+import { PopupWindow } from "window";
+import night_light from "services/night-light";
 
 const audio = await Service.import("audio");
 const battery = await Service.import("battery");
 const bluetooth = await Service.import("bluetooth");
+const hyprland = await Service.import("hyprland");
 const network = await Service.import("network");
 
 // Constructor for the top buttons in the quicksettings menu.
@@ -28,7 +31,7 @@ const Button = (props: {
 
   return Widget.Button({
     on_clicked: props.on_click ?? (() => { }),
-    className: "indicator",
+    className: "button",
     child: Widget.Box({
       children,
     })
@@ -63,7 +66,7 @@ const Slider = (props: {
 });
 
 // Big pill shaped buttons arranged in a grid in the quicksettings menu.
-const PillButton = (props: {
+const ToggleButton = (props: {
   icon: Icon,
   // Main label of the button displaying what the button is for.
   label: string | Binding<any, any, string>,
@@ -117,9 +120,10 @@ const PillButton = (props: {
       }
     },
     hexpand: false,
+    vexpand: false,
     children: [
       Widget.ToggleButton({
-        className: "pill-button",
+        className: "toggle-button",
         hexpand: true,
         active: props.active,
         onToggled: props.onToggled,
@@ -149,47 +153,75 @@ const PillButton = (props: {
 };
 
 export const Quicksettings = () => {
+  // Used to take a screenshot without including the quicksettings menu.
+  let opacity = Variable(1.0);
+
   let top_button_battery = Button({
     icon: battery.bind("icon_name"),
     label: battery.bind("percent").as(percent => `  ${percent}%`),
     on_click() {
       Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center power"`);
+      App.closeWindow("quicksettings");
     },
   });
 
   let top_buttons = [
     Button({
       icon: "applets-screenshooter-symbolic",
+      async on_click() {
+        const monitor_id = hyprland.active.monitor;
+        const monitor_name = hyprland.getMonitor(monitor_id.id)?.name;
+
+        opacity.value = 0.0;
+        // Ensure the quicksettings window is actually invisible when screenshotting.
+        App.getWindow("quicksettings")?.queue_draw();
+        await new Promise(r => setTimeout(r, 10));
+
+        await Utils.execAsync(`bash -c "grim -o ${monitor_name} /tmp/_screenshot"`);
+
+        Utils.execAsync(`bash -c "wl-copy < /tmp/_screenshot"`);
+        Utils.execAsync(`notify-send -a System "Screenshot captured" "You can paste the image from your clipboard." -i /tmp/_screenshot`);
+
+        opacity.value = 1.0;
+        App.closeWindow("quicksettings");
+      },
     }),
     Button({
       icon: "settings-symbolic",
       on_click() {
         Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center"`);
+        App.closeWindow("quicksettings");
       },
     }),
     Button({
       icon: "system-lock-screen-symbolic",
+      on_click() {
+        // TODO: implement this when a configuration system is introduced.
+        Utils.execAsync(`notify-send -a System "Unable to lock" "Locking via the bar is not yet implemented."`);
+        App.closeWindow("quicksettings");
+      },
     }),
     Button({
       icon: "system-shutdown-symbolic",
+      on_click() {
+        // TODO: a popup menu is needed as confirmation.
+        Utils.execAsync(`notify-send -a System "Unable to power down" "Shutting down via the bar is not yet implemented."`);
+        App.closeWindow("quicksettings");
+      },
     }),
   ];
 
-  return Widget.Window({
-    visible: false,
+  return PopupWindow({
     name: "quicksettings",
-    anchor: ['top', 'right'],
-    layer: "top",
-    exclusivity: "exclusive",
-    setup: self => {
-      self.keybind("Escape", () => App.closeWindow("quicksettings"));
-    },
     child: Widget.Box({
+      opacity: opacity.bind(),
       className: "quicksettings",
       vertical: true,
+      hexpand: false,
+      vexpand: false,
       children: [
         Widget.CenterBox({
-          className: "indicators",
+          className: "button-row",
           vertical: false,
           start_widget: Widget.Box({
             hpack: "start",
@@ -225,7 +257,7 @@ export const Quicksettings = () => {
         }),
 
         Widget.FlowBox({
-          className: "pill-buttons",
+          className: "toggle-buttons",
           setup(self) {
             // Ensure the children have the same size.
             self.homogeneous = true;
@@ -233,10 +265,10 @@ export const Quicksettings = () => {
             self.min_children_per_line = 2;
             self.max_children_per_line = 2;
             self.row_spacing = 12;
-            self.column_spacing = 12;
-            
+            self.column_spacing = 12
+
             self.add(
-              PillButton({
+              ToggleButton({
                 icon: network.wifi.bind('icon_name'),
                 label: "Wi-Fi",
                 subtext: Utils.merge(
@@ -262,7 +294,7 @@ export const Quicksettings = () => {
               }),
             );
             self.add(
-              PillButton({
+              ToggleButton({
                 icon: bluetooth
                   .bind("enabled")
                   .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
@@ -287,11 +319,15 @@ export const Quicksettings = () => {
               }),
             );
             self.add(
-              PillButton({
-                icon: "night-light-symbolic",
+              ToggleButton({
+                icon: night_light.bind("enabled").as(
+                  enabled => enabled ? "night-light-symbolic" : "night-light-disabled-symbolic",
+                ),
                 label: "Night Light",
-                active: false,
-                onToggled(event) { },
+                active: night_light.bind("enabled"),
+                onToggled({ active }) {
+                  night_light.enabled = active;
+                },
               }),
             );
           },

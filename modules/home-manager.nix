@@ -45,8 +45,8 @@ in
         ExecStart = "${pkgs.ags}/bin/ags -c ${../ags}/config.js";
         Restart = "on-failure";
         KillMode = "mixed";
-        Environment = [
-          "PATH=${pkgs.bun}/bin:${pkgs.coreutils}/bin:${pkgs.sassc}/bin:${pkgs.swaynotificationcenter}/bin"
+        Environment = with pkgs; [
+          "PATH=${bun}/bin:${coreutils}/bin:${sassc}/bin:${swaynotificationcenter}/bin:${wl-clipboard}/bin:${grim}/bin:${libnotify}/bin:${gammastep}/bin"
         ];
       };
     };

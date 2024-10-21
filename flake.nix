@@ -26,10 +26,14 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             ags
+            gammastep
+            grim
+            libnotify
             sass
             sassc
             typescript-language-server
             vscode-langservers-extracted
+            wl-clipboard
             bun
           ];
 
