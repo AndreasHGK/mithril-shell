@@ -125,5 +125,12 @@ in
         ];
       };
     };
+
+    home.packages = [
+      # Defines icon names this shell depends on. This dependency is not
+      # configurable, because these names are not _necessarily_ compatible with
+      # other icon themes.
+      pkgs.gnome.adwaita-icon-theme
+    ];
   };
 }
