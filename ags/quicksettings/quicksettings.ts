@@ -4,6 +4,7 @@ import { FlowBoxChild } from "types/@girs/gtk-3.0/gtk-3.0.cjs";
 import { Binding } from "types/service";
 import { PopupWindow } from "window";
 import night_light from "services/night-light";
+import { sliders } from "./sliders";
 
 const audio = await Service.import("audio");
 const battery = await Service.import("battery");
@@ -11,7 +12,7 @@ const bluetooth = await Service.import("bluetooth");
 const hyprland = await Service.import("hyprland");
 const network = await Service.import("network");
 
-// Constructor for the top buttons in the quicksettings menu.
+/** Constructor for the top buttons in the quicksettings menu. */
 const Button = (props: {
   on_click?: () => void,
   icon: Icon,
@@ -38,34 +39,7 @@ const Button = (props: {
   });
 };
 
-// A quicksettings slider element constructor.
-const Slider = (props: {
-  icon: Icon,
-  min: number,
-  max: number,
-  value?: number | Binding<any, any, number>,
-  on_change?: (value: { value: number }) => void,
-}) => Widget.Box({
-  vertical: false,
-  className: "slider",
-  hexpand: true,
-  children: [
-    Widget.Icon({
-      size: 16,
-      icon: props.icon,
-    }),
-    Widget.Slider({
-      draw_value: false,
-      hexpand: true,
-      value: props.value ?? 0,
-      min: props.min,
-      max: props.max,
-      on_change: props.on_change ?? ((_value) => { }),
-    }),
-  ],
-});
-
-// Big pill shaped buttons arranged in a grid in the quicksettings menu.
+/** Big pill shaped buttons arranged in a grid in the quicksettings menu. */
 const ToggleButton = (props: {
   icon: Icon,
   // Main label of the button displaying what the button is for.
@@ -237,24 +211,7 @@ export const Quicksettings = () => {
           }),
         }),
 
-        Slider({
-          value: audio.speaker.bind("volume"),
-          icon: "audio-volume-high-symbolic",
-          min: 0,
-          max: 1,
-          on_change: ({ value }) => {
-            audio.speaker.volume = value;
-          },
-        }),
-        Slider({
-          value: audio.microphone.bind("volume"),
-          icon: "audio-input-microphone-symbolic",
-          min: 0,
-          max: 1,
-          on_change: ({ value }) => {
-            audio.microphone.volume = value;
-          },
-        }),
+        sliders(),
 
         Widget.FlowBox({
           className: "toggle-buttons",

@@ -177,6 +177,10 @@ $flamingo: #f2cdcd;
     }
   }
 
+  .sliders {
+    @include space-between-y(1.5em);
+  }
+
   .slider {
     @include space-between-x(1.5em);
     padding-left: 0.25em;
