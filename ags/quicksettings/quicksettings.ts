@@ -49,7 +49,9 @@ const ToggleButton = (props: {
   subtext?: Binding<any, any, string | null>,
   active: boolean | Binding<any, any, boolean>,
   onToggled: (event: { active: boolean }) => void,
-  onSubmenu?: () => void,
+  // The chevron button on the right of the pill button is pressed. This button is hidden if a
+  // handler is not provided.
+  onExpand?: () => void,
 }) => {
   const main_label = Widget.Label({
     hpack: "start",
@@ -77,7 +79,7 @@ const ToggleButton = (props: {
 
   return Widget.Box({
     setup(self) {
-      if (props.onSubmenu !== undefined) {
+      if (props.onExpand !== undefined) {
         self.add(
           Widget.Button({
             className: "chevron",
@@ -87,7 +89,7 @@ const ToggleButton = (props: {
             }),
             onClicked() {
               // Typescript is unhappy without the cast.
-              (props as any).onSubmenu();
+              (props as any).onExpand();
             },
           }),
         );
@@ -248,6 +250,10 @@ export const Quicksettings = () => {
                   }
                   network.wifi.enabled = active;
                 },
+                onExpand() {               
+                  Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center wifi"`);
+                  App.closeWindow("quicksettings");
+                },
               }),
             );
             self.add(
@@ -272,6 +278,10 @@ export const Quicksettings = () => {
                     return;
                   }
                   bluetooth.enabled = active;
+                },
+                onExpand() {               
+                  Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center bluetooth"`);
+                  App.closeWindow("quicksettings");
                 },
               }),
             );

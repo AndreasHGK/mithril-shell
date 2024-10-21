@@ -135,7 +135,7 @@ $flamingo: #f2cdcd;
   @include background-0;
   @include space-between-y(1.5em);
 
-  border-radius: 1.5em;
+  border-radius: 1.75em;
   padding: 1em;
   margin: 0.25em;
   min-width: 24em;
@@ -280,10 +280,10 @@ $flamingo: #f2cdcd;
 
     // Make sure the chevron has the primary colour when the toggle before it is checked.
     *:checked+.chevron {
-      background-color: mix(white, $blue, 5%);
+      background-color: mix(white, $blue, 15%);
 
       &:hover {
-        background-color: hover-color(mix(white, $blue, 5%));
+        background-color: hover-color(mix(white, $blue, 15%));
       }
 
       * {
