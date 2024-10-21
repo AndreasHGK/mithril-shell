@@ -1,19 +1,4 @@
-$base: #1e1e2e;
-$mantle: #181825;
-$surface0: #313244;
-$surface1: #45475a;
-$surface2: #585b70;
-$text: #cdd6f4;
-$rosewater: #f5e0dc;
-$lavender: #b4befe;
-$red: #f38ba8;
-$peach: #fab387;
-$yellow: #f9e2af;
-$green: #a6e3a1;
-$teal: #94e2d5;
-$blue: #89b4fa;
-$mauve: #cba6f7;
-$flamingo: #f2cdcd;
+@import "theme";
 
 * {
   all: unset;
@@ -24,10 +9,6 @@ $flamingo: #f2cdcd;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-}
-
-@mixin background-0 {
-  background-color: $mantle;
 }
 
 @mixin rounded-full {
@@ -61,7 +42,7 @@ $flamingo: #f2cdcd;
 }
 
 .bar {
-  @include background-0;
+  background-color: $background;
   font-weight: bold;
 
   .bar-widget {
@@ -79,11 +60,11 @@ $flamingo: #f2cdcd;
     padding-bottom: 0em;
 
     &.active {
-      box-shadow: inset 0 0 0 100px scale-color($surface0, $lightness: -10%);
+      box-shadow: inset 0 0 0 100px scale-color($hover, $lightness: -10%);
     }
 
     &:hover {
-      box-shadow: inset 0 0 0 100px $surface0;
+      box-shadow: inset 0 0 0 100px $hover;
     }
 
     .workspaces {
@@ -101,7 +82,7 @@ $flamingo: #f2cdcd;
         margin-bottom: -0.20em;
         margin-top: -0.20em;
 
-        background-color: scale-color($surface2, $lightness: 20%);
+        background-color: scale-color($silent, $lightness: 20%);
 
         &.active {
           padding: 0.35em;
@@ -132,7 +113,7 @@ $flamingo: #f2cdcd;
 }
 
 .quicksettings {
-  @include background-0;
+  background-color: $background;
   @include space-between-y(1.5em);
 
   border-radius: 1.75em;
@@ -161,18 +142,18 @@ $flamingo: #f2cdcd;
   .button {
     @include rounded-full;
 
-    background-color: $surface0;
+    background-color: $hover;
     padding: 0.625em;
 
     &:hover {
-      background-color: hover-color($surface0);
+      background-color: hover-color($hover);
     }
 
     &:active {
-      background-color: $blue;
+      background-color: $primary;
 
       * {
-        color: $mantle;
+        color: $background;
       }
     }
   }
@@ -196,11 +177,11 @@ $flamingo: #f2cdcd;
       trough {
         min-height: $width;
         min-width: $width;
-        background-color: $surface0;
+        background-color: $hover;
 
         highlight,
         progress {
-          background-color: $blue;
+          background-color: $primary;
           min-height: $width;
           min-width: $width;
         }
@@ -226,22 +207,22 @@ $flamingo: #f2cdcd;
         border-bottom-right-radius: 9999px;
       }
 
-      background-color: $surface0;
+      background-color: $hover;
       min-height: 3em;
 
       &:hover {
-        background-color: hover-color($surface0);
+        background-color: hover-color($hover);
       }
 
       &:checked {
-        background-color: $blue;
+        background-color: $primary;
 
         &:hover {
-          background-color: hover-color($blue);
+          background-color: hover-color($primary);
         }
 
         * {
-          color: $mantle;
+          color: $background;
         }
       }
 
@@ -269,25 +250,25 @@ $flamingo: #f2cdcd;
     .chevron {
       padding-right: 0.75em;
       padding-left: 0.5em;
-      background-color: mix(white, $surface0, 5%);
+      background-color: mix(white, $hover, 5%);
       border-top-right-radius: 9999px;
       border-bottom-right-radius: 9999px;
 
-      border-left-color: $mantle;
+      border-left-color: $background;
       border-left-width: 1px;
       border-left-style: solid;
     }
 
     // Make sure the chevron has the primary colour when the toggle before it is checked.
     *:checked+.chevron {
-      background-color: mix(white, $blue, 15%);
+      background-color: mix(white, $primary, 15%);
 
       &:hover {
-        background-color: hover-color(mix(white, $blue, 15%));
+        background-color: hover-color(mix(white, $primary, 15%));
       }
 
       * {
-        color: $mantle;
+        color: $background;
       }
     }
   }

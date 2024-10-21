@@ -1,5 +1,5 @@
 {
-    "name": "ags-bar",
+    "name": "mithril-shell",
     "devDependencies": {
         "@types/tmp": "^0.2.6",
         "@typescript-eslint/eslint-plugin": "^6.20.0",
