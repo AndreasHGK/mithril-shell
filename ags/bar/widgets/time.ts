@@ -5,11 +5,10 @@ const time = Variable("", {
   poll: [1000, 'date +"%-d %b %H:%M"'],
 });
 
-export const Time = () =>
-  BarWidget({
-    child: Widget.Label({
-      className: "time",
-      label: time.bind(),
-    }),
-    onClicked: () => Utils.execAsync("swaync-client -t"),
-  });
+export const Time = () => BarWidget({
+  child: Widget.Label({
+    className: "time",
+    label: time.bind(),
+  }),
+  on_clicked: () => App.toggleWindow('timemenu'),
+});

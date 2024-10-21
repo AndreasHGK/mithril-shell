@@ -340,5 +340,11 @@ window.darkened {
       }
     }
   }
+}
 
+.timemenu {
+  @include rounded-full;
+
+  padding: 2em;
+  margin: 2em;
 }
