@@ -56,7 +56,7 @@ const ToggleButton = (props: {
   const main_label = Widget.Label({
     hpack: "start",
     label: props.label,
-    ellipsize: 3,
+    truncate: "end",
   });
   const labels = props.subtext === undefined ? [main_label] : props.subtext.as(subtext => {
     const children = [
@@ -69,7 +69,7 @@ const ToggleButton = (props: {
           hpack: "start",
           className: "subtext",
           label: subtext,
-          ellipsize: 3,
+          truncate: "end",
         })
       );
     }
@@ -215,90 +215,93 @@ export const Quicksettings = () => {
 
         sliders(),
 
-        Widget.FlowBox({
-          className: "toggle-buttons",
-          setup(self) {
-            // Ensure the children have the same size.
-            self.homogeneous = true;
-            self.hexpand = true;
-            self.min_children_per_line = 2;
-            self.max_children_per_line = 2;
-            self.row_spacing = 12;
-            self.column_spacing = 12
+        Widget.Scrollable({
+          hscroll: 'never',
+          vscroll: 'never',
+          child: Widget.FlowBox({
+            className: "toggle-buttons",
+            setup(self) {
+              // Ensure the children have the same size.
+              self.homogeneous = true;
+              self.min_children_per_line = 2;
+              self.max_children_per_line = 2;
+              self.row_spacing = 12;
+              self.column_spacing = 12
 
-            self.add(
-              ToggleButton({
-                icon: network.wifi.bind('icon_name'),
-                label: "Wi-Fi",
-                subtext: Utils.merge(
-                  [network.wifi.bind("internet"), network.wifi.bind("ssid")],
-                  (state, ssid) => {
-                    if (state === "disconnected") {
+              self.add(
+                ToggleButton({
+                  icon: network.wifi.bind('icon_name'),
+                  label: "Wi-Fi",
+                  subtext: Utils.merge(
+                    [network.wifi.bind("internet"), network.wifi.bind("ssid")],
+                    (state, ssid) => {
+                      if (state === "disconnected") {
+                        return null;
+                      }
+                      if (state === "connecting") {
+                        return "connecting...";
+                      }
+
+                      return ssid;
+                    },
+                  ),
+                  active: network.bind("wifi").as(wifi => wifi.enabled),
+                  onToggled({ active }) {
+                    if (network.wifi.enabled == active) {
+                      return;
+                    }
+                    network.wifi.enabled = active;
+                  },
+                  onExpand() {
+                    Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center wifi"`);
+                    App.closeWindow("quicksettings");
+                  },
+                }),
+              );
+              self.add(
+                ToggleButton({
+                  icon: bluetooth
+                    .bind("enabled")
+                    .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
+                  label: "Bluetooth",
+                  subtext: bluetooth.bind("connected_devices").as(devices => {
+                    if (devices.length === 0) {
                       return null;
                     }
-                    if (state === "connecting") {
-                      return "connecting...";
+                    if (devices.length === 1) {
+                      return devices[0].name;
                     }
 
-                    return ssid;
+                    return `${devices.length} devices`;
+                  }),
+                  active: bluetooth.bind("enabled"),
+                  onToggled({ active }) {
+                    if (bluetooth.enabled == active) {
+                      return;
+                    }
+                    bluetooth.enabled = active;
                   },
-                ),
-                active: network.bind("wifi").as(wifi => wifi.enabled),
-                onToggled({ active }) {
-                  if (network.wifi.enabled == active) {
-                    return;
-                  }
-                  network.wifi.enabled = active;
-                },
-                onExpand() {               
-                  Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center wifi"`);
-                  App.closeWindow("quicksettings");
-                },
-              }),
-            );
-            self.add(
-              ToggleButton({
-                icon: bluetooth
-                  .bind("enabled")
-                  .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
-                label: "Bluetooth",
-                subtext: bluetooth.bind("connected_devices").as(devices => {
-                  if (devices.length === 0) {
-                    return null;
-                  }
-                  if (devices.length === 1) {
-                    return devices[0].name;
-                  }
-
-                  return `${devices.length} devices`;
+                  onExpand() {
+                    Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center bluetooth"`);
+                    App.closeWindow("quicksettings");
+                  },
                 }),
-                active: bluetooth.bind("enabled"),
-                onToggled({ active }) {
-                  if (bluetooth.enabled == active) {
-                    return;
-                  }
-                  bluetooth.enabled = active;
-                },
-                onExpand() {               
-                  Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center bluetooth"`);
-                  App.closeWindow("quicksettings");
-                },
-              }),
-            );
-            self.add(
-              ToggleButton({
-                icon: night_light.bind("enabled").as(
-                  enabled => enabled ? "night-light-symbolic" : "night-light-disabled-symbolic",
-                ),
-                label: "Night Light",
-                active: night_light.bind("enabled"),
-                onToggled({ active }) {
-                  night_light.enabled = active;
-                },
-              }),
-            );
-          },
-        })
+              );
+              self.add(
+                ToggleButton({
+                  icon: night_light.bind("enabled").as(
+                    enabled => enabled ? "night-light-symbolic" : "night-light-disabled-symbolic",
+                  ),
+                  label: "Night Light",
+                  active: night_light.bind("enabled"),
+                  onToggled({ active }) {
+                    night_light.enabled = active;
+                  },
+                }),
+              );
+            },
+          }),
+        }),
       ],
     }),
   });

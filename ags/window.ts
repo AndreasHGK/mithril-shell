@@ -31,6 +31,7 @@ export const PopupWindow = (props: {
         vertical: true,
         children: [
           Widget.Revealer({
+            hexpand: false,
             transition: "slide_down",
             transitionDuration: 150,
             child: props.child,
