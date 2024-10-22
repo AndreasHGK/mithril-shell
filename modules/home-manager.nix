@@ -113,7 +113,7 @@ in
           Restart = "on-failure";
           KillMode = "mixed";
           Environment = with pkgs; [
-            "PATH=${bun}/bin:${coreutils}/bin:${sassc}/bin:${swaynotificationcenter}/bin:${wl-clipboard}/bin:${grim}/bin:${libnotify}/bin:${gammastep}/bin"
+            "PATH=${bun}/bin:${coreutils}/bin:${sassc}/bin:${swaynotificationcenter}/bin:${wl-clipboard}/bin:${grim}/bin:${libnotify}/bin:${gammastep}/bin:${bash}/bin"
           ];
         };
     };
