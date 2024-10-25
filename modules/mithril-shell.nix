@@ -1,10 +1,13 @@
-{
+inputs: {
   config,
   lib,
   pkgs,
   ...
 }:
 let
+  inherit (inputs) self;
+  inherit (pkgs.hostPlatform) system;
+  
   # Name that the systemd service for the bar will use.
   service-name = "mithril-shell";
   cfg = config.services.mithril-shell;
@@ -30,6 +33,24 @@ in
       default = false;
       description = ''
         Whether to enable mithril-shell. Does not automatically start the bar in your window manager.
+      '';
+    };
+
+    package = mkOption {
+      type = types.package;
+      default = self.packages.${system}.mithril-shell;
+      defaultText = "inputs.mithril-shell.packages.\${system}.mithril-shell";
+      description = ''
+        The mithril-shell package to use.
+      '';
+    };
+
+    finalPackage = mkOption {
+      type = types.package;
+      readOnly = true;
+      visible = false;
+      description = ''
+        The resulting mithril-shell package.
       '';
     };
 
@@ -71,51 +92,11 @@ in
         After = [ "graphical-session-pre.target" ];
       };
 
-      Service =
-        let
-          generateThemeScss = colors: ''
-            \$primary: #${colors.primary};
-            \$text: #${colors.text};
-            \$background: #${colors.background};
-            \$hover: #${colors.hover};
-            \$silent: #${colors.silent};
-          '';
-
-          colors =
-            if cfg.integrations.stylix.enable && config.stylix.enable then
-              let
-                stylixColors = config.lib.stylix.colors;
-              in
-              {
-                primary = stylixColors.base07;
-                text = stylixColors.base05;
-                background = stylixColors.base00;
-                hover = stylixColors.base02;
-                silent = stylixColors.base01;
-              }
-            else
-              cfg.theme.colors;
-
-          ags-config = pkgs.stdenv.mkDerivation {
-            name = "ags-config";
-            src = ../ags;
-            allowSubstitutes = false;
-            buildPhase = "true";
-            installPhase = ''
-              mkdir -p $out
-              cp -r . $out
-              echo "${generateThemeScss colors}" > $out/theme.scss
-            '';
-          };
-        in
-        {
-          ExecStart = "${pkgs.ags}/bin/ags -c ${ags-config}/config.js";
-          Restart = "on-failure";
-          KillMode = "mixed";
-          Environment = with pkgs; [
-            "PATH=${bun}/bin:${coreutils}/bin:${sassc}/bin:${swaynotificationcenter}/bin:${wl-clipboard}/bin:${grim}/bin:${libnotify}/bin:${gammastep}/bin:${bash}/bin:${gnome-control-center}/bin"
-          ];
-        };
+      Service = {
+        ExecStart = "${cfg.finalPackage}/bin/mithril-shell";
+        Restart = "on-failure";
+        KillMode = "mixed";
+      };
     };
 
     wayland.windowManager.hyprland = lib.mkIf cfg.integrations.hyprland.enable {
@@ -124,6 +105,45 @@ in
           "systemctl --user start ${service-name}"
         ];
       };
+    };
+
+    services.mithril-shell.finalPackage = let
+      generateThemeScss = colors: ''
+        \$primary: #${colors.primary};
+        \$text: #${colors.text};
+        \$background: #${colors.background};
+        \$hover: #${colors.hover};
+        \$silent: #${colors.silent};
+      '';
+
+      colors =
+        if cfg.integrations.stylix.enable && config.stylix.enable then
+          let
+            stylixColors = config.lib.stylix.colors;
+          in
+          {
+            primary = stylixColors.base07;
+            text = stylixColors.base05;
+            background = stylixColors.base00;
+            hover = stylixColors.base02;
+            silent = stylixColors.base01;
+          }
+        else
+          cfg.theme.colors;
+
+      agsConfig = pkgs.stdenv.mkDerivation {
+        name = "ags-config";
+        src = ../ags;
+        allowSubstitutes = false;
+        buildPhase = "true";
+        installPhase = ''
+          mkdir -p $out
+          cp -r . $out
+          echo "${generateThemeScss colors}" > $out/theme.scss
+        '';
+      };
+    in cfg.package.override {
+      inherit agsConfig;
     };
   };
 }

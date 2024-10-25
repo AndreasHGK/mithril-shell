@@ -136,7 +136,7 @@ export const Quicksettings = () => {
     icon: battery.bind("icon_name"),
     label: battery.bind("percent").as(percent => ` ${percent}%`),
     on_click() {
-      Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center power"`);
+      Utils.execAsync("mithril-control-center power");
       App.closeWindow("quicksettings");
     },
   });
@@ -165,7 +165,7 @@ export const Quicksettings = () => {
     Button({
       icon: "settings-symbolic",
       on_click() {
-        Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center"`);
+        Utils.execAsync("mithril-control-center");
         App.closeWindow("quicksettings");
       },
     }),
@@ -253,7 +253,7 @@ export const Quicksettings = () => {
                     network.wifi.enabled = active;
                   },
                   onExpand() {
-                    Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center wifi"`);
+                    Utils.execAsync("mithril-control-center wifi");
                     App.closeWindow("quicksettings");
                   },
                 }),
@@ -282,7 +282,7 @@ export const Quicksettings = () => {
                     bluetooth.enabled = active;
                   },
                   onExpand() {
-                    Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center bluetooth"`);
+                    Utils.execAsync("mithril-control-center bluetooth");
                     App.closeWindow("quicksettings");
                   },
                 }),

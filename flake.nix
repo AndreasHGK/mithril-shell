@@ -5,37 +5,39 @@
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
       flake-utils,
     }:
     {
-      homeModules.default = import ./modules/home-manager.nix;
+      homeManagerModules.default = import ./modules inputs;
+
+      lib = import ./lib inputs;
+
+      overlays.default = import ./pkgs inputs;
     }
     // flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
+        pkgs = nixpkgs.legacyPackages.${system}.extend self.overlays.default;
       in
       {
         formatter = pkgs.nixfmt-rfc-style;
 
+        packages = {
+          inherit (pkgs) mithril-control-center mithril-shell;
+        };
+
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            ags
-            gammastep
-            grim
-            libnotify
-            sass
-            sassc
-            typescript-language-server
-            vscode-langservers-extracted
-            wl-clipboard
-            bun
-          ];
+          packages =
+            with pkgs;
+            pkgs.mithril-shell.passthru.packages
+            ++ [
+              sass
+              typescript-language-server
+              vscode-langservers-extracted
+            ];
 
           shellHook = ''
             # This assumes the only flake.nix file in the project is in the root directory.

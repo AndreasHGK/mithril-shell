@@ -17,8 +17,8 @@ inputs.mithril-shell = {
 };
 ```
 
-After importing this flake, add the `mithril-shell.homeModules.default` module to your imports and add the
-following config to your home:
+After importing this flake, add the `mithril-shell.homeManagerModules.default` module to your
+imports and add the following config to your home:
 
 ```nix
 services.mithril-shell.enable = true;
