@@ -134,7 +134,7 @@ export const Quicksettings = () => {
 
   let top_button_battery = Button({
     icon: battery.bind("icon_name"),
-    label: battery.bind("percent").as(percent => `  ${percent}%`),
+    label: battery.bind("percent").as(percent => ` ${percent}%`),
     on_click() {
       Utils.execAsync(`bash -c "XDG_CURRENT_DESKTOP=gnome gnome-control-center power"`);
       App.closeWindow("quicksettings");
