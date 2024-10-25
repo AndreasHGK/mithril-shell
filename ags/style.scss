@@ -112,16 +112,21 @@
   }
 }
 
+// Common styles for a popup window.
+.popup {
+  background-color: $background;
+  border-radius: 1.75em;
+  margin: 0.25em;
+  box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+}
+
 .quicksettings {
   background-color: $background;
   @include space-between-y(1.5em);
 
-  border-radius: 1.75em;
   padding: 1em;
-  margin: 0.25em;
   min-width: 24em;
 
-  box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.33);
   // Ensures the shadow doesnt get cut off.
   margin-left: 0.5em;
   margin-bottom: 0.5em;

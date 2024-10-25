@@ -1,5 +1,4 @@
 import { Icon } from "lib/types";
-import { dynamicChildren } from "lib/widgets";
 import { Binding } from "types/service";
 
 const audio = await Service.import("audio");
@@ -11,10 +10,12 @@ const Slider = (props: {
   max: number,
   value?: number | Binding<any, any, number>,
   on_change?: (value: { value: number }) => void,
+  visible?: Binding<any, any, boolean>,
 }) => Widget.Box({
   vertical: false,
   className: "slider",
   hexpand: true,
+  visible: props.visible ?? true,
   children: [
     Widget.Icon({
       size: 16,
@@ -31,33 +32,29 @@ const Slider = (props: {
   ],
 });
 
-export const sliders = () => Widget.Box({
+export const Sliders = () => Widget.Box({
   vertical: true,
   className: "sliders",
-  children: dynamicChildren([
-    {
-      widget: Slider({
-        value: audio.speaker.bind("volume"),
-        icon: "audio-volume-high-symbolic",
-        min: 0,
-        max: 1,
-        on_change: ({ value }) => {
-          audio.speaker.volume = value;
-        },
-      }),
+  children: [
+    Slider({
+      value: audio.speaker.bind("volume"),
+      icon: "audio-volume-high-symbolic",
+      min: 0,
+      max: 1,
+      on_change: ({ value }) => {
+        audio.speaker.volume = value;
+      },
       visible: audio.speaker.bind("id").as(id => id !== null),
-    },
-    {
-      widget: Slider({
-        value: audio.microphone.bind("volume"),
-        icon: "audio-input-microphone-symbolic",
-        min: 0,
-        max: 1,
-        on_change: ({ value }) => {
-          audio.microphone.volume = value;
-        },
-      }),
+    }),
+    Slider({
+      value: audio.microphone.bind("volume"),
+      icon: "audio-input-microphone-symbolic",
+      min: 0,
+      max: 1,
+      on_change: ({ value }) => {
+        audio.microphone.volume = value;
+      },
       visible: audio.microphone.bind("id").as(id => id !== null),
-    },
-  ]),
+    }),
+  ],
 });

@@ -61,7 +61,7 @@ export const StatusIndicators = () => {
         )),
       ],
     }),
-    on_clicked: () => App.toggleWindow('quicksettings'),
+    onClicked: () => App.toggleWindow('quicksettings'),
   })
     .hook(App, (_self, windowName, visible) => {
       if (windowName !== "quicksettings") {
