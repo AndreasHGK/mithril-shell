@@ -121,10 +121,10 @@
   margin: 0.25em;
   min-width: 24em;
 
-  box-shadow: 0.15em 0 0.25em rgba(0, 0, 0, 0.33);
+  box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.33);
   // Ensures the shadow doesnt get cut off.
-  margin-left: 5em;
-  margin-bottom: 5em;
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
 
   label {
     font-weight: bold;
