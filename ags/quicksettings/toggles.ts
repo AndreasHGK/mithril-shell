@@ -1,7 +1,6 @@
 import { Icon } from "lib/types";
 import { Binding } from "types/service";
 import night_light from "services/night-light";
-import NM from "gi://NM";
 import Gtk from "gi://Gtk?version=3.0";
 
 const bluetooth = await Service.import("bluetooth");
