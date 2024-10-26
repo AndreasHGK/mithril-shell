@@ -1,6 +1,6 @@
 import { Icon } from "lib/types";
 import { Binding } from "types/service";
-import { PopupWindow } from "window";
+import { PopupWindow, showModal } from "window";
 import { Sliders } from "./sliders";
 import { Toggles } from './toggles';
 
@@ -85,10 +85,20 @@ export const Quicksettings = () => {
     }),
     Button({
       icon: "system-shutdown-symbolic",
-      onClick() {
-        // TODO: a popup menu is needed as confirmation.
-        Utils.execAsync(`notify-send -a System "Unable to power down" "Shutting down via the bar is not yet implemented."`);
+      async onClick() {
         App.closeWindow("quicksettings");
+
+        const shutdown = await showModal({
+          title: "Power Off",
+          description: "Are you sure you want to power off the computer?",
+          noOption: "Cancel",
+          yesOption: "Power Off",
+          emphasize: "no",
+        });
+
+        if (shutdown) {
+          await Utils.execAsync("shutdown now");
+        }
       },
     }),
   ];

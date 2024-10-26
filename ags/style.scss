@@ -118,6 +118,71 @@
   border-radius: 1.75em;
   margin: 0.25em;
   box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+  border: 1px solid scale-color($background, $lightness: 7.5%);
+}
+
+
+window.darkened {
+  background-color: rgba(0, 0, 0, 0.40);
+  box-shadow: inset 0em 0em 20em rgba(0, 0, 0, 0.75);
+}
+
+.modal {
+  min-width: 24em;
+  border-radius: 1.25em;
+
+  .content {
+    padding: 2em;
+    padding-left: 3em;
+    padding-right: 3em;
+
+    @include space-between-y(1em);
+
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 1.10em
+    }
+  }
+
+  .buttons {
+    * {
+      font-weight: bold;
+      font-size: 1.05em;
+    }
+
+    .no-button,
+    .yes-button {
+      padding: 0.5em;
+
+      background-color: $hover;
+
+      &:hover {
+        background-color: hover-color($hover);
+      }
+
+      &.emphasize {
+        background-color: scale-color($hover, $lightness: 10%);
+        border: 2px solid scale-color($hover, $lightness: 20%);
+
+        &:hover {
+          background-color: scale-color($hover, $lightness: 15%);
+          border: 2px solid scale-color($hover, $lightness: 25%);
+        }
+      }
+    }
+
+    .no-button {
+      border-bottom-left-radius: 1.25em;
+    }
+
+    .yes-button {
+      border-bottom-right-radius: 1.25em;
+    }
+  }
 }
 
 .quicksettings {
