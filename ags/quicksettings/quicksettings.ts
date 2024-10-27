@@ -1,9 +1,8 @@
 import { Icon } from "lib/types";
 import { Binding } from "types/service";
-import { PopupWindow } from "window";
+import { PopupWindow, showModal } from "window";
 import { Sliders } from "./sliders";
 import { Toggles } from './toggles';
-import { showModal } from "modal";
 
 const battery = await Service.import("battery");
 const hyprland = await Service.import("hyprland");
@@ -87,7 +86,9 @@ export const Quicksettings = () => {
     Button({
       icon: "system-shutdown-symbolic",
       async onClick() {
-        const shutdown_future = showModal({
+        App.closeWindow("quicksettings");
+
+        const shutdown = await showModal({
           title: "Power Off",
           description: "Are you sure you want to power off the computer?",
           noOption: "Cancel",
@@ -95,9 +96,7 @@ export const Quicksettings = () => {
           emphasize: "no",
         });
 
-        App.closeWindow("quicksettings");
-
-        if (await shutdown_future) {
+        if (shutdown) {
           await Utils.execAsync("shutdown now");
         }
       },
