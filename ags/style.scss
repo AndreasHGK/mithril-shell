@@ -121,10 +121,9 @@
   border: 1px solid scale-color($background, $lightness: 7.5%);
 }
 
-
 window.darkened {
-  background-color: rgba(0, 0, 0, 0.40);
-  box-shadow: inset 0em 0em 20em rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.50);
+  box-shadow: inset 0em 0em 5em 1em rgba(0, 0, 0, 0.75);
 }
 
 .modal {
