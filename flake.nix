@@ -62,6 +62,18 @@
               services.mithril-shell.integrations.hyprland.enable = true;
             };
           };
+
+          nixfmt = self.lib.mkCheck {
+            inherit pkgs;
+
+            name = "nixfmt";
+            inputs = [
+              pkgs.nixfmt-rfc-style
+            ];
+            text = ''
+              nixfmt -c .
+            '';
+          };
         };
 
         devShells.default = pkgs.mkShell {
