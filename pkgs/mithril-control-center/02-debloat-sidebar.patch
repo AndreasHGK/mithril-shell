@@ -1,0 +1,324 @@
+diff --git a/panels/applications/meson.build b/panels/applications/meson.build
+index e1bfb7920..befbf08e8 100644
+--- a/panels/applications/meson.build
++++ b/panels/applications/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+         input : desktop + '.in',
+        output : desktop,
+        po_dir : po_dir,
+-      install : true,
++      install : false,
+   install_dir : control_center_desktopdir
+ )
+ 
+diff --git a/panels/background/meson.build b/panels/background/meson.build
+index 6ced050f9..58a811b95 100644
+--- a/panels/background/meson.build
++++ b/panels/background/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/color/meson.build b/panels/color/meson.build
+index 52198ec59..c3132ccea 100644
+--- a/panels/color/meson.build
++++ b/panels/color/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/display/meson.build b/panels/display/meson.build
+index 895f73bf3..a41b3bdec 100644
+--- a/panels/display/meson.build
++++ b/panels/display/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/keyboard/meson.build b/panels/keyboard/meson.build
+index 5b6000bbd..b332b9ec8 100644
+--- a/panels/keyboard/meson.build
++++ b/panels/keyboard/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/mouse/meson.build b/panels/mouse/meson.build
+index 2cc5048c7..cf6bd3898 100644
+--- a/panels/mouse/meson.build
++++ b/panels/mouse/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/multitasking/meson.build b/panels/multitasking/meson.build
+index 66680ef32..eb30d1bb2 100644
+--- a/panels/multitasking/meson.build
++++ b/panels/multitasking/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/notifications/meson.build b/panels/notifications/meson.build
+index 625c1d32f..9535cab92 100644
+--- a/panels/notifications/meson.build
++++ b/panels/notifications/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/online-accounts/meson.build b/panels/online-accounts/meson.build
+index 679566069..23943bf1b 100644
+--- a/panels/online-accounts/meson.build
++++ b/panels/online-accounts/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/privacy/meson.build b/panels/privacy/meson.build
+index b10c1e90f..c766335af 100644
+--- a/panels/privacy/meson.build
++++ b/panels/privacy/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/search/meson.build b/panels/search/meson.build
+index 5827d06bc..e24e68ce3 100644
+--- a/panels/search/meson.build
++++ b/panels/search/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/sharing/meson.build b/panels/sharing/meson.build
+index bab2588f0..dd6859eca 100644
+--- a/panels/sharing/meson.build
++++ b/panels/sharing/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/system/about/meson.build b/panels/system/about/meson.build
+index b1e37ae56..dfc92d3d3 100644
+--- a/panels/system/about/meson.build
++++ b/panels/system/about/meson.build
+@@ -4,7 +4,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/system/datetime/meson.build b/panels/system/datetime/meson.build
+index ab27d4a5f..e3c09b36d 100644
+--- a/panels/system/datetime/meson.build
++++ b/panels/system/datetime/meson.build
+@@ -4,7 +4,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/system/meson.build b/panels/system/meson.build
+index 4fee82210..39bb136f3 100644
+--- a/panels/system/meson.build
++++ b/panels/system/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/system/region/meson.build b/panels/system/region/meson.build
+index c12b3889f..0545be15d 100644
+--- a/panels/system/region/meson.build
++++ b/panels/system/region/meson.build
+@@ -4,7 +4,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/system/users/meson.build b/panels/system/users/meson.build
+index 9d493b1bc..b8bf82792 100644
+--- a/panels/system/users/meson.build
++++ b/panels/system/users/meson.build
+@@ -4,7 +4,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/universal-access/meson.build b/panels/universal-access/meson.build
+index b9655c545..f0851171d 100644
+--- a/panels/universal-access/meson.build
++++ b/panels/universal-access/meson.build
+@@ -6,7 +6,7 @@ i18n.merge_file(
+   input: desktop + '.in',
+   output: desktop,
+   po_dir: po_dir,
+-  install: true,
++  install: false,
+   install_dir: control_center_desktopdir
+ )
+ 
+diff --git a/panels/wacom/meson.build b/panels/wacom/meson.build
+index 139385433..5e400e443 100644
+--- a/panels/wacom/meson.build
++++ b/panels/wacom/meson.build
+@@ -28,7 +28,7 @@ i18n.merge_file(
+         input : desktop + '.in',
+        output : desktop,
+        po_dir : po_dir,
+-      install : true,
++      install : false,
+   install_dir : control_center_desktopdir
+ )
+ 
+diff --git a/shell/cc-panel-list.c b/shell/cc-panel-list.c
+index 1b3b8f94b..027edc3e9 100644
+--- a/shell/cc-panel-list.c
++++ b/shell/cc-panel-list.c
+@@ -368,34 +368,9 @@ static const gchar * const panel_order[] = {
+ 
+   "separator",
+ 
+-  "display",
+   "sound",
+   "power",
+-  "multitasking",
+-  "background",
+-
+-  "separator",
+-
+-  "applications",
+-  "notifications",
+-  "search",
+-  "online-accounts",
+-  "sharing",
+-
+-  "separator",
+-
+-  "mouse",
+-  "keyboard",
+-  "color",
+   "printers",
+-  "wacom",
+-
+-  "separator",
+-
+-  "universal-access",
+-  "privacy",
+-  "system",
+-  "reset-settings",
+ };
+ 
+ static guint
+diff --git a/shell/cc-panel-loader.c b/shell/cc-panel-loader.c
+index 980faecbc..0e3ca651f 100644
+--- a/shell/cc-panel-loader.c
++++ b/shell/cc-panel-loader.c
+@@ -85,33 +85,16 @@ extern void cc_wwan_panel_static_init_func (void);
+ 
+ static CcPanelLoaderVtable default_panels[] =
+ {
+-  PANEL_TYPE("applications",     cc_applications_panel_get_type,         NULL),
+-  PANEL_TYPE("background",       cc_background_panel_get_type,           NULL),
+ #ifdef BUILD_BLUETOOTH
+   PANEL_TYPE("bluetooth",        cc_bluetooth_panel_get_type,            NULL),
+ #endif
+-  PANEL_TYPE("color",            cc_color_panel_get_type,                NULL),
+-  PANEL_TYPE("display",          cc_display_panel_get_type,              NULL),
+-  PANEL_TYPE("keyboard",         cc_keyboard_panel_get_type,             NULL),
+-  PANEL_TYPE("mouse",            cc_mouse_panel_get_type,                NULL),
+-  PANEL_TYPE("multitasking",     cc_multitasking_panel_get_type,         NULL),
+ #ifdef BUILD_NETWORK
+   PANEL_TYPE("network",          cc_network_panel_get_type,              NULL),
+   PANEL_TYPE("wifi",             cc_wifi_panel_get_type,                 cc_wifi_panel_static_init_func),
+ #endif
+-  PANEL_TYPE("notifications",    cc_notifications_panel_get_type,        NULL),
+-  PANEL_TYPE("online-accounts",  cc_online_accounts_panel_get_type,      NULL),
+   PANEL_TYPE("power",            cc_power_panel_get_type,                NULL),
+   PANEL_TYPE("printers",         cc_printers_panel_get_type,             NULL),
+-  PANEL_TYPE("privacy",          cc_privacy_panel_get_type,              NULL),
+-  PANEL_TYPE("search",           cc_search_panel_get_type,               NULL),
+-  PANEL_TYPE("sharing",          cc_sharing_panel_get_type,              cc_sharing_panel_static_init_func),
+   PANEL_TYPE("sound",            cc_sound_panel_get_type,                NULL),
+-  PANEL_TYPE("system",           cc_system_panel_get_type,               NULL),
+-  PANEL_TYPE("universal-access", cc_ua_panel_get_type,                   NULL),
+-#ifdef BUILD_WACOM
+-  PANEL_TYPE("wacom",            cc_wacom_panel_get_type,                cc_wacom_panel_static_init_func),
+-#endif
+ #ifdef BUILD_WWAN
+   PANEL_TYPE("wwan",             cc_wwan_panel_get_type,                 cc_wwan_panel_static_init_func),
+ #endif

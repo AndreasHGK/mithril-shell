@@ -11,16 +11,38 @@
   transition-duration: 150ms;
 }
 
-@mixin background-0 {
-  background-color: $background;
-}
-
 @mixin rounded-full {
   border-radius: 9999px;
 }
 
+// Add horizontal space between all direct child elements.
+@mixin space-between-x($space) {
+  >*+* {
+    margin-left: $space;
+  }
+}
+
+// Add vertical space between all direct child elements.
+@mixin space-between-y($space) {
+  >*+* {
+    margin-top: $space;
+  }
+}
+
+@function is-dark($color) {
+  @return lightness($color) < 50;
+}
+
+@function hover-color($color) {
+  @if is-dark($color) {
+    @return scale-color($color, $lightness: 5%);
+  }
+
+  @return scale-color($color, $lightness: -5%);
+}
+
 .bar {
-  @include background-0;
+  background-color: $background0;
   font-weight: bold;
 
   .bar-widget {
@@ -37,8 +59,12 @@
     padding-top: 0em;
     padding-bottom: 0em;
 
+    &.active {
+      box-shadow: inset 0 0 0 100px scale-color($surface0, $lightness: -10%);
+    }
+
     &:hover {
-      box-shadow: inset 0 0 0 100px $hover;
+      box-shadow: inset 0 0 0 100px $surface0;
     }
 
     .workspaces {
@@ -56,7 +82,7 @@
         margin-bottom: -0.20em;
         margin-top: -0.20em;
 
-        background-color: scale-color($silent, $lightness: 20%);
+        background-color: mix($background0, $text, 50%);
 
         &.active {
           padding: 0.35em;
@@ -86,10 +112,233 @@
   }
 }
 
-.quicksettings {
-  @include background-0;
-  @include rounded-full;
+// Common styles for a popup window.
+.popup {
+  background-color: $background1;
+  border-radius: 1.75em;
+  margin: 0.25em;
+  box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+  border: 1px solid scale-color($background1, $lightness: 7.5%);
+}
 
-  padding: 2em;
-  margin: 2em;
+window.darkened {
+  background-color: rgba(0, 0, 0, 0.50);
+  box-shadow: inset 0em 0em 5em 1em rgba(0, 0, 0, 0.75);
+}
+
+.modal {
+  min-width: 24em;
+  border-radius: 1.25em;
+
+  .content {
+    padding: 2em;
+    padding-left: 3em;
+    padding-right: 3em;
+
+    @include space-between-y(1em);
+
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 1.10em
+    }
+  }
+
+  .buttons {
+    * {
+      font-weight: bold;
+      font-size: 1.05em;
+    }
+
+    .no-button,
+    .yes-button {
+      padding: 0.5em;
+
+      background-color: $surface0;
+
+      &:hover {
+        background-color: hover-color($surface0);
+      }
+
+      &.emphasize {
+        background-color: scale-color($surface0, $lightness: 10%);
+        border: 2px solid scale-color($surface0, $lightness: 20%);
+
+        &:hover {
+          background-color: scale-color($surface0, $lightness: 15%);
+          border: 2px solid scale-color($surface0, $lightness: 25%);
+        }
+      }
+    }
+
+    .no-button {
+      border-bottom-left-radius: 1.25em;
+    }
+
+    .yes-button {
+      border-bottom-right-radius: 1.25em;
+    }
+  }
+}
+
+.quicksettings {
+  @include space-between-y(1.5em);
+
+  padding: 1em;
+  min-width: 24em;
+
+  // Ensures the shadow doesnt get cut off.
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
+
+  label {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .button-row {
+    @include space-between-x(3em);
+
+    >* {
+      @include space-between-x(0.75em);
+    }
+  }
+
+  .button {
+    @include rounded-full;
+
+    background-color: $surface0;
+    padding: 0.625em;
+
+    &:hover {
+      background-color: hover-color($surface0);
+    }
+
+    &:active {
+      background-color: $primary;
+
+      * {
+        color: $background1;
+      }
+    }
+  }
+
+  .sliders {
+    @include space-between-y(1.5em);
+  }
+
+  .slider {
+    @include space-between-x(1.5em);
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+
+    scale {
+      * {
+        @include rounded-full;
+      }
+
+      $width: 0.25em;
+
+      trough {
+        min-height: $width;
+        min-width: $width;
+        background-color: $surface0;
+
+        highlight,
+        progress {
+          background-color: $primary;
+          min-height: $width;
+          min-width: $width;
+        }
+      }
+
+      slider {
+        background-color: $text;
+        min-height: $width;
+        min-width: $width;
+        margin: -0.5em;
+      }
+    }
+  }
+
+  .toggle-buttons {
+    .toggle-button {
+      border-top-left-radius: 9999px;
+      border-bottom-left-radius: 9999px;
+
+      // If there is a chevron after the pill button it will be the right part of the pill shape.
+      &:last-child {
+        border-top-right-radius: 9999px;
+        border-bottom-right-radius: 9999px;
+      }
+
+      background-color: $surface0;
+      min-height: 3em;
+
+      &:hover {
+        background-color: hover-color($surface0);
+      }
+
+      &:checked {
+        background-color: $primary;
+
+        &:hover {
+          background-color: hover-color($primary);
+        }
+
+        * {
+          color: $background1;
+        }
+      }
+
+      >box>box {
+        @include space-between-x(0.5em);
+        padding-left: 1em;
+        padding-right: 1em;
+
+        >box {
+          @include space-between-y(0.1em);
+        }
+      }
+
+      label {
+        font-size: 0.865em;
+
+        &.subtext {
+          font-weight: normal;
+          font-size: 0.775em;
+        }
+      }
+    }
+
+    // Placed after a toggle button to allow for opening a submenu.
+    .chevron {
+      padding-right: 0.75em;
+      padding-left: 0.5em;
+      background-color: mix(white, $surface0, 5%);
+      border-top-right-radius: 9999px;
+      border-bottom-right-radius: 9999px;
+
+      border-left-color: $background1;
+      border-left-width: 1px;
+      border-left-style: solid;
+    }
+
+    // Make sure the chevron has the primary colour when the toggle before it is checked.
+    *:checked+.chevron {
+      background-color: mix(white, $primary, 15%);
+
+      &:hover {
+        background-color: hover-color(mix(white, $primary, 15%));
+      }
+
+      * {
+        color: $background1;
+      }
+    }
+  }
+
 }

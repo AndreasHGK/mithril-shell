@@ -10,5 +10,5 @@ export const Time = () => BarWidget({
     className: "time",
     label: time.bind(),
   }),
-  on_clicked: () => Utils.execAsync("swaync-client -t"),
+  onClicked: () => Utils.execAsync("swaync-client -t"),
 });

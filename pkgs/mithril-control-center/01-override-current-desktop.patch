@@ -1,0 +1,13 @@
+diff --git a/shell/cc-application.c b/shell/cc-application.c
+index 99f6282f3..1204c5c85 100644
+--- a/shell/cc-application.c
++++ b/shell/cc-application.c
+@@ -160,7 +160,7 @@ get_current_desktops (void)
+ {
+   const char *envvar;
+ 
+-  envvar = g_getenv ("XDG_CURRENT_DESKTOP");
++  envvar = "gnome";
+ 
+   if (!envvar)
+     return g_new0 (char *, 0 + 1);

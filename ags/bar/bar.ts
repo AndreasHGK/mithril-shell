@@ -26,9 +26,6 @@ export const Bar = (monitor: number) => Widget.Window({
     end_widget: Widget.Box({
       hpack: "end",
       children: [
-        BarWidget({
-          child: Widget.Label("en")
-        }),
         StatusIndicators(),
       ],
     }),

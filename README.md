@@ -17,8 +17,8 @@ inputs.mithril-shell = {
 };
 ```
 
-After importing this flake, add the `mithril-shell.homeModules.default` module to your imports and add the
-following config to your home:
+After importing this flake, add the `mithril-shell.homeManagerModules.default` module to your
+imports and add the following config to your home:
 
 ```nix
 services.mithril-shell.enable = true;
@@ -33,12 +33,11 @@ The color scheme can easily be changed by setting the following attributes.
 
 ```nix
 services.mithril-shell.theme.colors = {
+  primary = "#94e2d5";
   text = "#cdd6f4";
-  background = "#181825";
-  # Color of the ovals drawn around widgets when hovering over them.
-  hover = "#313244";
-  # Color of non-active workspaces.
-  silent = "#585b70";
+  background0 = "#181825";
+  background1 = "#1e1e2e";
+  surface0 = "#313244";
 };
 ```
 
