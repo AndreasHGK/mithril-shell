@@ -1,7 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.url = "github:nix-systems/default-linux";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -9,6 +16,7 @@
       self,
       nixpkgs,
       flake-utils,
+      home-manager,
     }:
     {
       homeManagerModules.default = import ./modules inputs;
@@ -27,6 +35,21 @@
 
         packages = {
           inherit (pkgs) mithril-control-center mithril-shell;
+        };
+
+        checks = {
+          home-manager = self.lib.mkHomeManagerCheck {
+            inherit pkgs;
+
+            module = {
+              imports = [
+                self.homeManagerModules.default
+              ];
+
+              services.mithril-shell.enable = true;
+              services.mithril-shell.integrations.hyprland.enable = true;
+            };
+          };
         };
 
         devShells.default = pkgs.mkShell {
