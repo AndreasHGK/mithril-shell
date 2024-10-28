@@ -1,1 +1,5 @@
+.direnv
 result
+
+ags/node_modules
+ags/types

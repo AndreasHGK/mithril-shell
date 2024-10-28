@@ -1,4 +1,4 @@
-import { Subprocess } from "types/@girs/gio-2.0/gio-2.0.cjs";
+import type { Subprocess } from "types/@girs/gio-2.0/gio-2.0.cjs";
 
 class NightLightService extends Service {
   static {
@@ -6,7 +6,7 @@ class NightLightService extends Service {
       this,
       {},
       {
-        'enabled': ['boolean', 'rw'],
+        enabled: ["boolean", "rw"],
       },
     );
   }
@@ -25,11 +25,11 @@ class NightLightService extends Service {
     if (value) {
       this.#process = Utils.subprocess(
         ["gammastep", "-O", "4000"],
-        (_) => { },
+        (_) => {},
         (err) => {
           if (err.includes("Zero outputs support gamma adjustment")) {
             print("Failed to enable night light.");
-            
+
             // Set a timeout so the user sees some feedback that the process failed.
             setTimeout(() => {
               if (this.#process === null) {
@@ -38,7 +38,7 @@ class NightLightService extends Service {
 
               this.#process?.force_exit();
               this.#process = null;
-              this.changed('enabled');
+              this.changed("enabled");
             }, 200);
           }
         },
@@ -47,16 +47,16 @@ class NightLightService extends Service {
       this.#process?.force_exit();
       this.#process = null;
     }
-    this.changed('enabled');
+    this.changed("enabled");
   }
 
   constructor() {
     super();
 
-    this.changed('enabled');
+    this.changed("enabled");
   }
 }
 
-const service = new NightLightService;
+const service = new NightLightService();
 
 export default service;

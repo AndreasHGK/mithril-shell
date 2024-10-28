@@ -3,6 +3,26 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
+  # Creates a simple check consisting of a shell script to be used in the flake's `checks` output.
+  # The commands in this script are executed at the root of the repository.
+  mkCheck =
+    {
+      inputs ? [ ],
+      name,
+      pkgs,
+      text,
+    }:
+    pkgs.runCommand name
+      {
+        nativeBuildInputs = inputs;
+      }
+      ''
+        mkdir -p $out
+        # Change directory to the project root.
+        cd ${../.}
+        ${text}
+      '';
+
   # Creates a derivation that builds a home-manager configuration with the specified module(s),
   # essentially creating a test that passes when the configuration builds successfully.
   mkHomeManagerCheck =

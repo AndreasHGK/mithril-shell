@@ -1,7 +1,7 @@
-import { Icon } from "lib/types";
-import { Binding } from "types/service";
+import type Gtk from "gi://Gtk?version=3.0";
+import type { Icon } from "lib/types";
 import night_light from "services/night-light";
-import Gtk from "gi://Gtk?version=3.0";
+import type { Binding } from "types/service";
 
 const bluetooth = await Service.import("bluetooth");
 const network = await Service.import("network");
@@ -16,37 +16,38 @@ const network = await Service.import("network");
  * hidden if a handler is not provided.
  */
 const ToggleButton = (props: {
-  icon: Icon,
-  label: string | Binding<any, any, string>,
-  subtext?: Binding<any, any, string | null>,
-  active: boolean | Binding<any, any, boolean>,
-  visible?: Binding<any, any, boolean>,
-  onToggled: (event: { active: boolean }) => void,
-  onExpand?: () => void,
+  icon: Icon;
+  label: string | Binding<any, any, string>;
+  subtext?: Binding<any, any, string | null>;
+  active: boolean | Binding<any, any, boolean>;
+  visible?: Binding<any, any, boolean>;
+  onToggled: (event: { active: boolean }) => void;
+  onExpand?: () => void;
 }) => {
   const main_label = Widget.Label({
     hpack: "start",
     label: props.label,
     truncate: "end",
   });
-  const labels = props.subtext === undefined ? [main_label] : props.subtext.as(subtext => {
-    const children = [
-      main_label
-    ];
+  const labels =
+    props.subtext === undefined
+      ? [main_label]
+      : props.subtext.as((subtext) => {
+          const children = [main_label];
 
-    if (subtext) {
-      children.push(
-        Widget.Label({
-          hpack: "start",
-          className: "subtext",
-          label: subtext,
-          truncate: "end",
-        })
-      );
-    }
+          if (subtext) {
+            children.push(
+              Widget.Label({
+                hpack: "start",
+                className: "subtext",
+                label: subtext,
+                truncate: "end",
+              }),
+            );
+          }
 
-    return children;
-  });
+          return children;
+        });
 
   return Widget.Box({
     setup(self) {
@@ -68,12 +69,16 @@ const ToggleButton = (props: {
 
       // Hack to make the filter function actually detect a change.
       if (props.visible) {
-        self.hook(props.visible.emitter, self => {
-          if (!self.parent) {
-            return;
-          }
-          (self.parent as Gtk.FlowBoxChild).changed();
-        }, "changed");
+        self.hook(
+          props.visible.emitter,
+          (self) => {
+            if (!self.parent) {
+              return;
+            }
+            (self.parent as Gtk.FlowBoxChild).changed();
+          },
+          "changed",
+        );
       }
     },
     visible: props.visible ?? false,
@@ -112,11 +117,10 @@ const ToggleButton = (props: {
 
 const toggle_buttons = {
   wifi: ToggleButton({
-    visible: network
-      .wifi
+    visible: network.wifi
       .bind("state")
-      .as(state => !(["unmanaged", "unavailable", "unknown"].includes(state))),
-    icon: network.wifi.bind('icon_name'),
+      .as((state) => !["unmanaged", "unavailable", "unknown"].includes(state)),
+    icon: network.wifi.bind("icon_name"),
     label: "Wi-Fi",
     subtext: Utils.merge(
       [network.wifi.bind("internet"), network.wifi.bind("ssid")],
@@ -131,9 +135,9 @@ const toggle_buttons = {
         return ssid;
       },
     ),
-    active: network.bind("wifi").as(wifi => wifi.enabled),
+    active: network.bind("wifi").as((wifi) => wifi.enabled),
     onToggled({ active }) {
-      if (network.wifi.enabled == active) {
+      if (network.wifi.enabled === active) {
         return;
       }
       network.wifi.enabled = active;
@@ -145,12 +149,12 @@ const toggle_buttons = {
   }),
 
   bluetooth: ToggleButton({
-    visible: bluetooth.bind("state").as(state => state !== "absent"),
+    visible: bluetooth.bind("state").as((state) => state !== "absent"),
     icon: bluetooth
       .bind("enabled")
-      .as(enabled => enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"),
+      .as((enabled) => (enabled ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic")),
     label: "Bluetooth",
-    subtext: bluetooth.bind("connected_devices").as(devices => {
+    subtext: bluetooth.bind("connected_devices").as((devices) => {
       if (devices.length === 0) {
         return null;
       }
@@ -162,7 +166,7 @@ const toggle_buttons = {
     }),
     active: bluetooth.bind("enabled"),
     onToggled({ active }) {
-      if (bluetooth.enabled == active) {
+      if (bluetooth.enabled === active) {
         return;
       }
       bluetooth.enabled = active;
@@ -174,12 +178,14 @@ const toggle_buttons = {
   }),
 
   vpn: ToggleButton({
-    visible: network.vpn.bind("connections").as(cons => cons.length > 0),
+    visible: network.vpn.bind("connections").as((cons) => cons.length > 0),
     icon: network.vpn
       .bind("activated_connections")
-      .as(cons => cons.length > 0 ? "network-vpn-symbolic" : "network-vpn-disconnected-symbolic"),
+      .as((cons) =>
+        cons.length > 0 ? "network-vpn-symbolic" : "network-vpn-disconnected-symbolic",
+      ),
     label: "VPN",
-    subtext: network.vpn.bind("activated_connections").as(cons => {
+    subtext: network.vpn.bind("activated_connections").as((cons) => {
       if (cons.length === 0) {
         return null;
       }
@@ -189,7 +195,7 @@ const toggle_buttons = {
 
       return `${cons.length} connections`;
     }),
-    active: network.vpn.bind("activated_connections").as(cons => cons.length > 0),
+    active: network.vpn.bind("activated_connections").as((cons) => cons.length > 0),
     onToggled({ active }) {
       // Deactivate all vpn connections.
       if (!active) {
@@ -199,17 +205,15 @@ const toggle_buttons = {
         return;
       }
 
-      if (network.vpn.activated_connections.length != 0 || network.vpn.connections.length == 0) {
+      if (network.vpn.activated_connections.length !== 0 || network.vpn.connections.length === 0) {
         return;
       }
       // Connect to the most recent vpn connection.
-      const sorted_cons = network
-        .vpn
-        .connections
-        .sort(
-          (a, b) => b.connection.get_setting_connection().timestamp
-            - a.connection.get_setting_connection().timestamp
-        );
+      const sorted_cons = network.vpn.connections.sort(
+        (a, b) =>
+          b.connection.get_setting_connection().timestamp -
+          a.connection.get_setting_connection().timestamp,
+      );
 
       network.vpn.activateVpnConnection(sorted_cons[0]);
     },
@@ -220,9 +224,9 @@ const toggle_buttons = {
   }),
 
   nightLight: ToggleButton({
-    icon: night_light.bind("enabled").as(
-      enabled => enabled ? "night-light-symbolic" : "night-light-disabled-symbolic",
-    ),
+    icon: night_light
+      .bind("enabled")
+      .as((enabled) => (enabled ? "night-light-symbolic" : "night-light-disabled-symbolic")),
     label: "Night Light",
     active: night_light.bind("enabled"),
     onToggled({ active }) {
@@ -231,33 +235,34 @@ const toggle_buttons = {
   }),
 };
 
-export const Toggles = () => Widget.Scrollable({
-  hscroll: 'never',
-  vscroll: 'never',
-  child: Widget.FlowBox({
-    className: "toggle-buttons",
-    setup(self) {
-      // Ensure the children have the same size.
-      self.homogeneous = true;
-      self.min_children_per_line = 2;
-      self.max_children_per_line = 2;
-      self.row_spacing = 12;
-      self.column_spacing = 12;
+export const Toggles = () =>
+  Widget.Scrollable({
+    hscroll: "never",
+    vscroll: "never",
+    child: Widget.FlowBox({
+      className: "toggle-buttons",
+      setup(self) {
+        // Ensure the children have the same size.
+        self.homogeneous = true;
+        self.min_children_per_line = 2;
+        self.max_children_per_line = 2;
+        self.row_spacing = 12;
+        self.column_spacing = 12;
 
-      // For some reason the visible property is extremely inconsistent in flowboxes, so this makes
-      // sure the toggle buttons are hidden when they should be.
-      self.set_filter_func((child) => child.child.get_visible());
+        // For some reason the visible property is extremely inconsistent in flowboxes, so this makes
+        // sure the toggle buttons are hidden when they should be.
+        self.set_filter_func((child) => child.child.get_visible());
 
-      const elems = [
-        toggle_buttons.wifi,
-        toggle_buttons.bluetooth,
-        toggle_buttons.vpn,
-        toggle_buttons.nightLight,
-      ];
+        const elems = [
+          toggle_buttons.wifi,
+          toggle_buttons.bluetooth,
+          toggle_buttons.vpn,
+          toggle_buttons.nightLight,
+        ];
 
-      for (const elem of elems) {
-        self.add(elem);
-      }
-    },
-  }),
-});
+        for (const elem of elems) {
+          self.add(elem);
+        }
+      },
+    }),
+  });

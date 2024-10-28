@@ -1,25 +1,26 @@
 import { conditionalChildren } from "lib/widgets";
-import Gtk from "types/@girs/gtk-3.0/gtk-3.0";
-import Revealer from "types/widgets/revealer";
-import { type WindowProps } from "types/widgets/window"
+import type Gtk from "types/@girs/gtk-3.0/gtk-3.0";
+import type Revealer from "types/widgets/revealer";
+import type { WindowProps } from "types/widgets/window";
 
 /**
  * Padding to cover the unoccupied area of the screen when a popup window is open.
  * Closes the window when pressed.
  */
 const Padding = (props: {
-  name: string,
-  vertical?: boolean,
-  clickoff: boolean,
-}) => Widget.EventBox({
-  vexpand: props.vertical ?? false,
-  hexpand: !(props.vertical ?? false),
-  setup: w => {
-    if (props.clickoff) {
-      w.on("button-press-event", () => App.toggleWindow(props.name));
-    }
-  },
-});
+  name: string;
+  vertical?: boolean;
+  clickoff: boolean;
+}) =>
+  Widget.EventBox({
+    vexpand: props.vertical ?? false,
+    hexpand: !(props.vertical ?? false),
+    setup: (w) => {
+      if (props.clickoff) {
+        w.on("button-press-event", () => App.toggleWindow(props.name));
+      }
+    },
+  });
 
 /**
  * A generic popup window builder.
@@ -29,17 +30,17 @@ const Padding = (props: {
  * "slide_down".
  */
 export const PopupWindow = (props: {
-  name: string,
-  child: Gtk.Widget,
-  location: "center" | "top-left" | "top-center" | "top-right",
-  popupAnimation?: typeof Revealer.prototype.transition,
-  clickoff?: boolean,
-  windowStyle?: string,
-  windowLayer?: WindowProps["layer"],
-  exclusivity?: WindowProps["exclusivity"],
+  name: string;
+  child: Gtk.Widget;
+  location: "center" | "top-left" | "top-center" | "top-right";
+  popupAnimation?: typeof Revealer.prototype.transition;
+  clickoff?: boolean;
+  windowStyle?: string;
+  windowLayer?: WindowProps["layer"];
+  exclusivity?: WindowProps["exclusivity"];
 }) => {
   const clickoff = props.clickoff ?? true;
-  
+
   const pad_bottom = ["center", "top-left", "top-center", "top-right"].includes(props.location);
   const pad_right = ["center", "top-left", "top-center"].includes(props.location);
   const pad_left = ["center", "top-center", "top-right"].includes(props.location);
@@ -53,48 +54,56 @@ export const PopupWindow = (props: {
     layer: props.windowLayer ?? "top",
     exclusivity: props.exclusivity ?? "exclusive",
     keymode: "on-demand",
-    setup: self => {
+    setup: (self) => {
       self.keybind("Escape", () => App.closeWindow("quicksettings"));
     },
     child: Widget.Box({
       children: conditionalChildren([
-        pad_left ? Padding({
-          name: props.name,
-          clickoff,
-        }) : null,
+        pad_left
+          ? Padding({
+              name: props.name,
+              clickoff,
+            })
+          : null,
 
         Widget.Box({
           vertical: true,
           children: conditionalChildren([
-            pad_top ? Padding({
-              name: props.name,
-              vertical: true,
-              clickoff,
-            }) : null,
+            pad_top
+              ? Padding({
+                  name: props.name,
+                  vertical: true,
+                  clickoff,
+                })
+              : null,
 
             Widget.Revealer({
               hexpand: false,
               transition: props.popupAnimation ?? "slide_down",
               transitionDuration: 150,
               child: props.child,
-              setup: self => self.hook(App, (_, wname, visible) => {
-                if (wname === props.name)
-                  self.reveal_child = visible
-              }),
+              setup: (self) =>
+                self.hook(App, (_, wname, visible) => {
+                  if (wname === props.name) self.reveal_child = visible;
+                }),
             }),
 
-            pad_bottom ? Padding({
-              name: props.name,
-              vertical: true,
-              clickoff,
-            }) : null,
+            pad_bottom
+              ? Padding({
+                  name: props.name,
+                  vertical: true,
+                  clickoff,
+                })
+              : null,
           ]),
         }),
 
-        pad_right ? Padding({
-          name: props.name,
-          clickoff,
-        }) : null,
+        pad_right
+          ? Padding({
+              name: props.name,
+              clickoff,
+            })
+          : null,
       ]),
     }),
   });
@@ -105,11 +114,11 @@ export const PopupWindow = (props: {
  * button is pressed, returning true if the yes button is pressed and false otherwise.
  */
 export function showModal(settings: {
-  title: string,
-  description: string,
-  noOption: string,
-  yesOption: string,
-  emphasize: "yes" | "no",
+  title: string;
+  description: string;
+  noOption: string;
+  yesOption: string;
+  emphasize: "yes" | "no";
 }): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const window = PopupWindow({
@@ -149,7 +158,7 @@ export function showModal(settings: {
             homogeneous: true,
             children: [
               Widget.Button({
-                className: "no-button" + (settings.emphasize === "no" ? " emphasize" : ""),
+                className: `no-button${settings.emphasize === "no" ? " emphasize" : ""}`,
                 child: Widget.Label({
                   label: settings.noOption,
                 }),
@@ -159,7 +168,7 @@ export function showModal(settings: {
                 },
               }),
               Widget.Button({
-                className: "yes-button" + (settings.emphasize === "yes" ? " emphasize" : ""),
+                className: `yes-button${settings.emphasize === "yes" ? " emphasize" : ""}`,
                 child: Widget.Label({
                   label: settings.yesOption,
                 }),
@@ -168,13 +177,13 @@ export function showModal(settings: {
                   resolve(true);
                 },
               }),
-            ]
+            ],
           }),
         ],
       }),
     });
 
-    if (App.windows.find(w => w.name === "modal")) {
+    if (App.windows.find((w) => w.name === "modal")) {
       reject("A modal was already opened.");
       return;
     }

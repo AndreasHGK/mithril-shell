@@ -1,17 +1,17 @@
-import { Icon } from "lib/types";
-import { Binding } from "types/service";
+import type { Icon } from "lib/types";
+import type { Binding } from "types/service";
 import { PopupWindow, showModal } from "window";
 import { Sliders } from "./sliders";
-import { Toggles } from './toggles';
+import { Toggles } from "./toggles";
 
 const battery = await Service.import("battery");
 const hyprland = await Service.import("hyprland");
 
 /** Constructor for the top buttons in the quicksettings menu. */
 const Button = (props: {
-  onClick?: () => void,
-  icon: Icon,
-  label?: string | Binding<any, any, string>,
+  onClick?: () => void;
+  icon: Icon;
+  label?: string | Binding<any, any, string>;
 }) => {
   const children: any[] = [
     Widget.Icon({
@@ -20,34 +20,36 @@ const Button = (props: {
   ];
 
   if (props.label) {
-    children.push(Widget.Label({
-      label: props.label,
-    }));
+    children.push(
+      Widget.Label({
+        label: props.label,
+      }),
+    );
   }
 
   return Widget.Button({
-    onClicked: props.onClick ?? (() => { }),
+    onClicked: props.onClick ?? (() => {}),
     className: "button",
     child: Widget.Box({
       children,
-    })
+    }),
   });
 };
 
 export const Quicksettings = () => {
   // Used to take a screenshot without including the quicksettings menu.
-  let opacity = Variable(1.0);
+  const opacity = Variable(1.0);
 
-  let top_button_battery = Button({
+  const top_button_battery = Button({
     icon: battery.bind("icon_name"),
-    label: battery.bind("percent").as(percent => ` ${percent}%`),
+    label: battery.bind("percent").as((percent) => ` ${percent}%`),
     onClick() {
       Utils.execAsync("mithril-control-center power");
       App.closeWindow("quicksettings");
     },
   });
 
-  let top_buttons = [
+  const top_buttons = [
     Button({
       icon: "applets-screenshooter-symbolic",
       async onClick() {
@@ -57,12 +59,14 @@ export const Quicksettings = () => {
         opacity.value = 0.0;
         // Ensure the quicksettings window is actually invisible when screenshotting.
         App.getWindow("quicksettings")?.queue_draw();
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise((r) => setTimeout(r, 10));
 
         await Utils.execAsync(`bash -c "grim -o ${monitor_name} /tmp/_screenshot"`);
 
         Utils.execAsync(`bash -c "wl-copy < /tmp/_screenshot"`);
-        Utils.execAsync(`notify-send -a System "Screenshot captured" "You can paste the image from your clipboard." -i /tmp/_screenshot`);
+        Utils.execAsync(
+          `notify-send -a System "Screenshot captured" "You can paste the image from your clipboard." -i /tmp/_screenshot`,
+        );
 
         opacity.value = 1.0;
         App.closeWindow("quicksettings");
@@ -79,7 +83,9 @@ export const Quicksettings = () => {
       icon: "system-lock-screen-symbolic",
       onClick() {
         // TODO: implement this when a configuration system is introduced.
-        Utils.execAsync(`notify-send -a System "Unable to lock" "Locking via the bar is not yet implemented."`);
+        Utils.execAsync(
+          `notify-send -a System "Unable to lock" "Locking via the bar is not yet implemented."`,
+        );
         App.closeWindow("quicksettings");
       },
     }),
@@ -124,9 +130,7 @@ export const Quicksettings = () => {
           }),
           endWidget: Widget.Box({
             hpack: "end",
-            children: battery.available
-              ? top_buttons
-              : top_buttons.slice(top_buttons.length / 2),
+            children: battery.available ? top_buttons : top_buttons.slice(top_buttons.length / 2),
           }),
         }),
 

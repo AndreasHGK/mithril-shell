@@ -38,6 +38,18 @@
         };
 
         checks = {
+          biome = self.lib.mkCheck {
+            inherit pkgs;
+
+            name = "biome";
+            inputs = [
+              pkgs.biome
+            ];
+            text = ''
+              biome check
+            '';
+          };
+
           home-manager = self.lib.mkHomeManagerCheck {
             inherit pkgs;
 
@@ -57,6 +69,7 @@
             with pkgs;
             pkgs.mithril-shell.passthru.packages
             ++ [
+              biome
               sass
               typescript-language-server
               vscode-langservers-extracted
