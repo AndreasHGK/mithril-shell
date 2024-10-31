@@ -25,6 +25,7 @@ let
       type = lib.types.coercedTo lib.types.str (lib.removePrefix "#") hexColorType;
       inherit default;
       example = default;
+      description = "An individual colour of the mithril-shell theme.";
     };
 in
 {

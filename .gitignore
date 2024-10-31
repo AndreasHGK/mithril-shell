@@ -1,5 +1,8 @@
 .direnv
-result
-
 ags/node_modules
 ags/types
+docs/.vitepress/.temp
+docs/.vitepress/cache
+docs/.vitepress/dist
+docs/node_modules
+result

@@ -35,6 +35,11 @@
 
         packages = {
           inherit (pkgs) mithril-control-center mithril-shell;
+
+          mithril-docs = pkgs.callPackage ./docs {
+            inherit home-manager;
+            hmModule = self.homeManagerModules.default;
+          };
         };
 
         checks = {
@@ -85,6 +90,8 @@
               sass
               typescript-language-server
               vscode-langservers-extracted
+              yarn
+              nodejs
             ];
 
           shellHook = ''
