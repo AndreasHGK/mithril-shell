@@ -9,6 +9,7 @@
   swaynotificationcenter,
   writeShellApplication,
   wl-clipboard,
+  adwaita-icon-theme,
   agsConfig ? ../../ags,
 }:
 writeShellApplication rec {
@@ -24,9 +25,11 @@ writeShellApplication rec {
     sassc
     swaynotificationcenter
     wl-clipboard
+    adwaita-icon-theme
   ];
 
   text = ''
+    XDG_DATA_DIRS=$XDG_DATA_DIRS:${adwaita-icon-theme}/share
     exec ags -c ${agsConfig}/config.js "$@"
   '';
 

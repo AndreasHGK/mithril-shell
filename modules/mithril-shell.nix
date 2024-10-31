@@ -141,9 +141,5 @@ in {
       cfg.package.override {
         inherit agsConfig;
       };
-
-    home.packages = [
-      inputs.nixpkgs.legacyPackages.${system}.adwaita-icon-theme
-    ];
   };
 }
