@@ -1,9 +1,11 @@
-inputs: {
+inputs:
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (inputs) self;
   inherit (pkgs.hostPlatform) system;
 
@@ -17,13 +19,15 @@ inputs: {
     description = "RGB color in hex format";
     check = x: lib.isString x && !(lib.hasPrefix "#" x) && builtins.match "^[0-9A-Fa-f]{6}$" x != null;
   };
-  mkHexColorOption = default:
+  mkHexColorOption =
+    default:
     lib.mkOption {
       type = lib.types.coercedTo lib.types.str (lib.removePrefix "#") hexColorType;
       inherit default;
       example = default;
     };
-in {
+in
+{
   options.services.mithril-shell = with lib; {
     enable = mkOption {
       type = types.bool;
@@ -85,8 +89,8 @@ in {
       Unit = {
         Description = "Mithril Shell";
         Documentation = "https://github.com/AndreasHGK/mithril-shell";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session-pre.target"];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session-pre.target" ];
       };
 
       Service = {
@@ -104,40 +108,43 @@ in {
       };
     };
 
-    services.mithril-shell.finalPackage = let
-      generateThemeScss = colors: ''
-        \$primary: #${colors.primary};
-        \$text: #${colors.text};
-        \$background0: #${colors.background0};
-        \$background1: #${colors.background1};
-        \$surface0: #${colors.surface0};
-      '';
-
-      colors =
-        if cfg.integrations.stylix.enable && config.stylix.enable
-        then let
-          stylixColors = config.lib.stylix.colors;
-        in {
-          primary = stylixColors.base0C;
-          text = stylixColors.base05;
-          background0 = stylixColors.base00;
-          background1 = stylixColors.base01;
-          surface0 = stylixColors.base02;
-        }
-        else cfg.theme.colors;
-
-      agsConfig = pkgs.stdenv.mkDerivation {
-        name = "ags-config";
-        src = ../ags;
-        allowSubstitutes = false;
-        buildPhase = "true";
-        installPhase = ''
-          mkdir -p $out
-          cp -r . $out
-          echo "${generateThemeScss colors}" > $out/theme.scss
+    services.mithril-shell.finalPackage =
+      let
+        generateThemeScss = colors: ''
+          \$primary: #${colors.primary};
+          \$text: #${colors.text};
+          \$background0: #${colors.background0};
+          \$background1: #${colors.background1};
+          \$surface0: #${colors.surface0};
         '';
-      };
-    in
+
+        colors =
+          if cfg.integrations.stylix.enable && config.stylix.enable then
+            let
+              stylixColors = config.lib.stylix.colors;
+            in
+            {
+              primary = stylixColors.base0C;
+              text = stylixColors.base05;
+              background0 = stylixColors.base00;
+              background1 = stylixColors.base01;
+              surface0 = stylixColors.base02;
+            }
+          else
+            cfg.theme.colors;
+
+        agsConfig = pkgs.stdenv.mkDerivation {
+          name = "ags-config";
+          src = ../ags;
+          allowSubstitutes = false;
+          buildPhase = "true";
+          installPhase = ''
+            mkdir -p $out
+            cp -r . $out
+            echo "${generateThemeScss colors}" > $out/theme.scss
+          '';
+        };
+      in
       cfg.package.override {
         inherit agsConfig;
       };

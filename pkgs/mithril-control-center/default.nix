@@ -7,7 +7,7 @@ gnome-control-center.overrideAttrs (old: {
 
   patches = old.patches ++ (readPatches ./.);
 
-  postFixup = ''    
+  postFixup = ''
     for i in $out/share/applications/*; do
       substituteInPlace $i --replace "Exec=$out/bin/gnome-control-center" "Exec=$out/bin/mithril-control-center"
     done

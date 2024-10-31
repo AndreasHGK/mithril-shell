@@ -1,4 +1,5 @@
-inputs: {
+inputs:
+{
   config,
   lib,
   pkgs,
@@ -22,7 +23,7 @@ let
       ExecStart = exec;
       Restart = "on-failure";
     };
-    
+
     Install.WantedBy = [
       "${target}.target"
     ];
@@ -92,13 +93,14 @@ in
           A group of services to complement mithril-control-center.
         '';
 
-        Install.WantedBy = [  
+        Install.WantedBy = [
           "mithril-shell.service"
         ];
       };
 
-      services.gsd-rfkill = lib.mkIf cfg.compatibility.bluetooth.enable
-        (mkService "${cfg.compatibility.bluetooth.package}/libexec/gsd-rfkill");
+      services.gsd-rfkill = lib.mkIf cfg.compatibility.bluetooth.enable (
+        mkService "${cfg.compatibility.bluetooth.package}/libexec/gsd-rfkill"
+      );
     };
   };
 }
