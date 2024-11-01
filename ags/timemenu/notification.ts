@@ -1,4 +1,4 @@
-import { type Notification as NotificationInfo } from "types/service/notifications"
+import type { Notification as NotificationInfo } from "types/service/notifications";
 
 export default (notification: NotificationInfo) => {
   const content = Widget.Box({
@@ -12,11 +12,11 @@ export default (notification: NotificationInfo) => {
           Widget.Box({
             children: [
               Widget.Label({
-                class_name: "title",
+                className: "title",
                 xalign: 0,
                 justification: "left",
                 hexpand: true,
-                max_width_chars: 24,
+                maxWidthChars: 24,
                 truncate: "end",
                 wrap: true,
                 label: notification.summary.trim(),
@@ -48,44 +48,47 @@ export default (notification: NotificationInfo) => {
         ],
       }),
     ],
-  })
+  });
 
-  const actionsbox = notification.actions.length > 0 ? Widget.Revealer({
-    transition: "slide_down",
-    child: Widget.EventBox({
-      child: Widget.Box({
-        class_name: "actions horizontal",
-        children: notification.actions.map(action => Widget.Button({
-          class_name: "action-button",
-          on_clicked: () => notification.invoke(action.id),
-          hexpand: true,
-          child: Widget.Label(action.label),
-        })),
-      }),
-    }),
-  }) : null
+  const actionsbox =
+    notification.actions.length > 0
+      ? Widget.Revealer({
+          transition: "slide_down",
+          child: Widget.EventBox({
+            child: Widget.Box({
+              class_name: "actions horizontal",
+              children: notification.actions.map((action) =>
+                Widget.Button({
+                  class_name: "action-button",
+                  on_clicked: () => notification.invoke(action.id),
+                  hexpand: true,
+                  child: Widget.Label(action.label),
+                }),
+              ),
+            }),
+          }),
+        })
+      : null;
 
   const eventbox = Widget.EventBox({
     vexpand: false,
     on_primary_click: notification.dismiss,
     on_hover() {
-      if (actionsbox)
-        actionsbox.reveal_child = true
+      if (actionsbox) actionsbox.reveal_child = true;
     },
     on_hover_lost() {
-      if (actionsbox)
-        actionsbox.reveal_child = true
+      if (actionsbox) actionsbox.reveal_child = true;
 
-      notification.dismiss()
+      notification.dismiss();
     },
     child: Widget.Box({
       vertical: true,
       children: actionsbox ? [content, actionsbox] : [content],
     }),
-  })
+  });
 
   return Widget.Box({
     class_name: `notification ${notification.urgency}`,
     child: eventbox,
-  })
-}
+  });
+};
