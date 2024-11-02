@@ -342,3 +342,48 @@ window.darkened {
   }
 
 }
+
+.osd-popup {
+  >box {
+    background-color: $background0;
+    border: 1px solid scale-color($background0, $lightness: 7.5%);
+    border-radius: 9999px;
+    box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+    padding: 1em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    margin: 0.5em;
+    margin-bottom: 5em;
+
+    @include space-between-x(1em);
+
+    box.middle {
+      label {
+        font-size: 16px;
+        margin-bottom: 0.4em;
+        margin-top: -0.4em
+      }
+
+      // Styled the level bar.
+      block {
+        transition-duration: 150ms;
+        transition-property: all;
+
+        &.filled {
+          border-radius: 9999px;
+          background-color: $text;
+
+          transition-property: all;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-duration: 150ms;
+        }
+
+        &.empty {
+          border-radius: 9999px;
+          background-color: $surface0;
+        }
+      }
+
+    }
+  }
+}
