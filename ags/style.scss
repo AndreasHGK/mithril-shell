@@ -79,8 +79,8 @@
         @include rounded-full;
 
         transition-property: min-width, background-color;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        transition-duration: 200ms;
 
         min-height: 0.45em;
         min-width: 0.45em;
@@ -92,7 +92,7 @@
 
         &.active {
           min-height: 0.6em;
-          min-width: 1.75em;
+          min-width: 1.8em;
 
           margin-bottom: -0.30em;
           margin-top: -0.30em;
