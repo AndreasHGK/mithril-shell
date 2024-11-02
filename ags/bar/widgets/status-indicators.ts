@@ -1,8 +1,8 @@
+import { volumeIcon } from "lib/icons.js";
 import type { Icon } from "lib/types";
 import type Gtk from "types/@girs/gtk-3.0/gtk-3.0.js";
 import type { Binding } from "types/service.js";
 import { BarWidget } from "../bar-widget.js";
-import { volumeIcon } from "lib/icons.js";
 
 const audio = await Service.import("audio");
 const battery = await Service.import("battery");
