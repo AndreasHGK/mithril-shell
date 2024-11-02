@@ -14,6 +14,7 @@ if (xdg_config_home !== null) {
 export let config = {
   minWorkspaces: opt<number>(3),
   lockCommand: opt<string | null>(null),
+  enableVolumePopup: opt<boolean>(true),
 };
 
 /**

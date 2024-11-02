@@ -65,6 +65,15 @@ in
     };
 
     settings = {
+      enableVolumePopup = mkOption {
+        type = types.bool;
+        default = true;
+        example = true;
+        description = ''
+          When true, shows a small indicator popup whenever the default speaker volume changes.
+        '';
+      };
+    
       minWorkspaces = mkOption {
         type = types.int;
         default = 3;
