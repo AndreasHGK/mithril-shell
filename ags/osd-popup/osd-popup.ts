@@ -18,7 +18,7 @@ export const OsdPopup = (props: {
 }) =>
   Widget.Window({
     setup(self) {
-      const close_delay = 1000;
+      const close_delay = 1500;
 
       // We need to keep track of the previous value as the binding may be triggered even when the
       // value did not change.
