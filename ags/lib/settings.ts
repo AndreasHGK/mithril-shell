@@ -15,9 +15,13 @@ export let config = {
   animations: {
     activeWorkspace: opt<"simple" | "smooth">("simple"),
   },
-  minWorkspaces: opt<number>(3),
   lockCommand: opt<string | null>(null),
-  enableVolumePopup: opt<boolean>(true),
+  minWorkspaces: opt<number>(3),
+  popups: {
+    volumePopup: {
+      enable: opt<boolean>(true),
+    },
+  },
 };
 
 /**

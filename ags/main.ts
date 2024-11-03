@@ -18,7 +18,7 @@ export function main(dest: string): void {
     windows: () => {
       const windows = [...forMonitors(Bar), Quicksettings()];
 
-      if (config.enableVolumePopup) {
+      if (config.popups?.volumePopup?.enable) {
         windows.push(VolumePopup());
       }
 
