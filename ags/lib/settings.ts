@@ -12,6 +12,9 @@ if (xdg_config_home !== null) {
 
 /** The program configuration. */
 export let config = {
+  animations: {
+    activeWorkspace: opt<"simple" | "smooth">("simple"),
+  },
   minWorkspaces: opt<number>(3),
   lockCommand: opt<string | null>(null),
 };

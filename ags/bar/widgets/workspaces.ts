@@ -42,6 +42,12 @@ export const Workspaces = (monitor: number) =>
               shown_active_workspace.bind(),
             ],
             (real_active, shown_active) => {
+              // The simple animation just animates the previous and new active workspace indicators
+              // without touching the other ones.
+              if (config.animations?.activeWorkspace === "simple") {
+                return real_active;
+              }
+
               target_active_workspace = real_active;
 
               const step_amount = Math.abs(shown_active - real_active);
