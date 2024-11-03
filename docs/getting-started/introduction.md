@@ -5,6 +5,7 @@ Mithril Shell adds a few things to improve your linux desktop experience:
 - A dropdown quicksettings menu accessible from the status bar.
 - A control center.
   This is a lightly patched version of the GNOME control center.
+- An optional on screen display popup for volume.
 
 More things will be added as the project continues to be developed!
 
