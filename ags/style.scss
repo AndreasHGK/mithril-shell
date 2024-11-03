@@ -70,23 +70,29 @@
     .workspaces {
       padding-top: 0.870em;
       padding-bottom: 0.870em;
+      padding-left: 0.25em;
+      padding-right: 0.25em;
 
+      @include space-between-x(0.5em);
 
       .workspace-indicator {
         @include rounded-full;
 
-        padding: 0.25em;
+        transition-property: min-width, background-color;
+        transition-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        transition-duration: 200ms;
 
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        min-height: 0.45em;
+        min-width: 0.45em;
+
         margin-bottom: -0.20em;
         margin-top: -0.20em;
 
         background-color: mix($background0, $text, 50%);
 
         &.active {
-          padding: 0.35em;
-          padding-left: 1.4em;
+          min-height: 0.6em;
+          min-width: 1.8em;
 
           margin-bottom: -0.30em;
           margin-top: -0.30em;

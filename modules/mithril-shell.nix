@@ -65,6 +65,23 @@ in
     };
 
     settings = {
+      animations = {
+        activeWorkspace = mkOption {
+          type = types.enum [
+            "simple"
+            "smooth"
+          ];
+          default = "smooth";
+          example = "simple";
+          description = lib.mdDoc ''
+            The animation to display when changing the active workspace on the current monitor.
+            - **simple:** only animate the old and new active workspace indicators.
+            - **smooth:** run through all intermediate workspace indicators until reaching the new
+              active indicator.
+          '';
+        };
+      };
+
       enableVolumePopup = mkOption {
         type = types.bool;
         default = true;
