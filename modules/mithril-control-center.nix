@@ -45,7 +45,7 @@ in
     package = mkOption {
       type = types.nullOr types.package;
       default = self.packages.${system}.mithril-control-center;
-      defaultText = "inputs.mithril-shell.packages.\${system}.default";
+      defaultText = lib.literalExpression "inputs.mithril-shell.packages.\${system}.default";
       description = ''
         The mithril-control-center package to use.
       '';

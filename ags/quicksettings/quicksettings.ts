@@ -1,3 +1,4 @@
+import { config } from "lib/settings";
 import type { Icon } from "lib/types";
 import type { Binding } from "types/service";
 import { PopupWindow, showModal } from "window";
@@ -82,11 +83,14 @@ export const Quicksettings = () => {
     Button({
       icon: "system-lock-screen-symbolic",
       onClick() {
-        // TODO: implement this when a configuration system is introduced.
-        Utils.execAsync(
-          `notify-send -a System "Unable to lock" "Locking via the bar is not yet implemented."`,
-        );
         App.closeWindow("quicksettings");
+
+        if (config.lockCommand === null) {
+          Utils.execAsync(`notify-send -a System "Unable to lock" "No lock command configured."`);
+          return;
+        }
+
+        Utils.execAsync(config.lockCommand);
       },
     }),
     Button({

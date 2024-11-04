@@ -30,7 +30,7 @@ writeShellApplication rec {
 
   text = ''
     XDG_DATA_DIRS=$XDG_DATA_DIRS:${adwaita-icon-theme}/share
-    exec ags -c ${agsConfig}/config.js "$@"
+    exec ags -c ${agsConfig}/config.js -b mithril-shell "$@"
   '';
 
   derivationArgs.passthru.packages = runtimeInputs;

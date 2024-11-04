@@ -41,7 +41,7 @@ in
     package = mkOption {
       type = types.package;
       default = self.packages.${system}.mithril-shell;
-      defaultText = "inputs.mithril-shell.packages.\${system}.mithril-shell";
+      defaultText = lib.literalExpression "inputs.mithril-shell.packages.\${system}.mithril-shell";
       description = ''
         The mithril-shell package to use.
       '';
@@ -62,6 +62,54 @@ in
       background0 = mkHexColorOption "#181825";
       background1 = mkHexColorOption "#1e1e2e";
       surface0 = mkHexColorOption "#313244";
+    };
+
+    settings = {
+      animations = {
+        activeWorkspace = mkOption {
+          type = types.enum [
+            "simple"
+            "smooth"
+          ];
+          default = "smooth";
+          example = "simple";
+          description = lib.mdDoc ''
+            The animation to display when changing the active workspace on the current monitor.
+            - **simple:** only animate the old and new active workspace indicators.
+            - **smooth:** run through all intermediate workspace indicators until reaching the new
+              active indicator.
+          '';
+        };
+      };
+
+      lockCommand = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = lib.literalExpression "\${pkgs.hyprlock}/bin/hyprlock --immediate";
+        description = ''
+          The command used to lock the screen. Set to null to disable.
+        '';
+      };
+
+      minWorkspaces = mkOption {
+        type = types.int;
+        default = 3;
+        example = 10;
+        description = ''
+          The minimum amount of workspaces to show regardless of if they are empty or not.
+        '';
+      };
+
+      popups = {
+        volumePopup.enable = mkOption {
+          type = types.bool;
+          default = true;
+          example = true;
+          description = ''
+            When true, shows a small indicator popup whenever the default speaker volume changes.
+          '';
+        };
+      };
     };
 
     integrations = {
@@ -107,6 +155,10 @@ in
           "systemctl --user start ${service-name}"
         ];
       };
+    };
+
+    xdg.configFile = {
+      "mithril-shell/settings.json".text = builtins.toJSON cfg.settings;
     };
 
     services.mithril-shell.finalPackage =

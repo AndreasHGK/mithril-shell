@@ -1,3 +1,4 @@
+import { volumeIcon } from "lib/icons.js";
 import type { Icon } from "lib/types";
 import type Gtk from "types/@girs/gtk-3.0/gtk-3.0.js";
 import type { Binding } from "types/service.js";
@@ -62,17 +63,7 @@ export const StatusIndicators = () => {
         }),
 
         StatusIndicator({
-          icon: audio.speaker.bind("volume").as((volume) => {
-            const icon = [
-              [101, "overamplified"],
-              [67, "high"],
-              [34, "medium"],
-              [1, "low"],
-              [0, "muted"],
-            ].find(([threshold]) => +threshold <= volume * 100)?.[1];
-
-            return `audio-volume-${icon}-symbolic`;
-          }),
+          icon: audio.speaker.bind("volume").as((volume) => volumeIcon(volume)),
         }),
 
         StatusIndicator({

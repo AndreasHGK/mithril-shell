@@ -70,23 +70,29 @@
     .workspaces {
       padding-top: 0.870em;
       padding-bottom: 0.870em;
+      padding-left: 0.25em;
+      padding-right: 0.25em;
 
+      @include space-between-x(0.5em);
 
       .workspace-indicator {
         @include rounded-full;
 
-        padding: 0.25em;
+        transition-property: min-width, background-color;
+        transition-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        transition-duration: 200ms;
 
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        min-height: 0.45em;
+        min-width: 0.45em;
+
         margin-bottom: -0.20em;
         margin-top: -0.20em;
 
         background-color: mix($background0, $text, 50%);
 
         &.active {
-          padding: 0.35em;
-          padding-left: 1.4em;
+          min-height: 0.6em;
+          min-width: 1.8em;
 
           margin-bottom: -0.30em;
           margin-top: -0.30em;
@@ -338,6 +344,44 @@ window.darkened {
       * {
         color: $background1;
       }
+    }
+  }
+}
+
+.osd-popup {
+  >box {
+    background-color: $background0;
+    border: 1px solid scale-color($background0, $lightness: 7.5%);
+    border-radius: 9999px;
+    box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+    padding: 1em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    margin: 0.5em;
+    margin-bottom: 5em;
+
+    @include space-between-x(1em);
+
+    box.middle {
+      label {
+        font-size: 16px;
+        margin-bottom: 0.4em;
+        margin-top: -0.4em
+      }
+
+      // Styled the level bar.
+      block {
+        &.filled {
+          border-radius: 9999px;
+          background-color: $text;
+        }
+
+        &.empty {
+          border-radius: 9999px;
+          background-color: $surface0;
+        }
+      }
+
     }
   }
 }

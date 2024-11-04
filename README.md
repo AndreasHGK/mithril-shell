@@ -26,3 +26,5 @@ You can try the project without installing with the following command:
 ```bash
 nix run github:andreashgk/mithril-shell#mithril-shell
 ```
+NOTE: you may not be able to use the bluetooth panel in the control center if you run it this way.
+It should work in a full install.
