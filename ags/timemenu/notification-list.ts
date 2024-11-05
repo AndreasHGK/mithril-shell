@@ -57,7 +57,6 @@ const NotificationList = (notifications: NotificationMap) => {
   };
 
   return Widget.Scrollable({
-    className: "scrollable",
     visible: notifications.bind().as((n) => n.size > 0),
     vexpand: true,
     hscroll: "never",
@@ -85,7 +84,6 @@ export default () => {
   // Keep track of registered notifications.
   const notifications: NotificationMap = Variable(new Map());
   return Widget.Box({
-    className: "list",
     children: [Placeholder(notifications), NotificationList(notifications)],
   });
 };

@@ -1,10 +1,14 @@
 import type { Notification as NotificationInfo } from "types/service/notifications";
 
+import NotificationIcon from "./icon";
+
+import { formatTime } from "lib/format";
+
 export default (notification: NotificationInfo) => {
   const content = Widget.Box({
     class_name: "content",
     children: [
-      // NotificationIcon(notification),
+      NotificationIcon(notification),
       Widget.Box({
         hexpand: true,
         vertical: true,
@@ -22,11 +26,11 @@ export default (notification: NotificationInfo) => {
                 label: notification.summary.trim(),
                 use_markup: true,
               }),
-              // Widget.Label({
-              //   class_name: "time",
-              //   vpack: "start",
-              //   label: time(notification.time),
-              // }),
+              Widget.Label({
+                class_name: "time",
+                vpack: "start",
+                label: formatTime(notification.time),
+              }),
               Widget.Button({
                 class_name: "close-button",
                 vpack: "start",
@@ -70,25 +74,23 @@ export default (notification: NotificationInfo) => {
         })
       : null;
 
-  const eventbox = Widget.EventBox({
-    vexpand: false,
-    on_primary_click: notification.dismiss,
-    on_hover() {
-      if (actionsbox) actionsbox.reveal_child = true;
-    },
-    on_hover_lost() {
-      if (actionsbox) actionsbox.reveal_child = true;
-
-      notification.dismiss();
-    },
-    child: Widget.Box({
-      vertical: true,
-      children: actionsbox ? [content, actionsbox] : [content],
-    }),
-  });
-
   return Widget.Box({
     class_name: `notification ${notification.urgency}`,
-    child: eventbox,
+    child: Widget.EventBox({
+      vexpand: false,
+      on_primary_click: notification.dismiss,
+      on_hover() {
+        if (actionsbox) actionsbox.reveal_child = true;
+      },
+      on_hover_lost() {
+        if (actionsbox) actionsbox.reveal_child = true;
+
+        notification.dismiss();
+      },
+      child: Widget.Box({
+        vertical: true,
+        children: actionsbox ? [content, actionsbox] : [content],
+      }),
+    }),
   });
 };
