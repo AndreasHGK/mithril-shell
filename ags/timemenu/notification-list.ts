@@ -20,12 +20,22 @@ const Placeholder = (notifications: NotificationMap) =>
 const NotificationList = (notifications: NotificationMap) => {
   const notify = (self: ReturnType<typeof Widget.Box>, id: number | undefined) => {
     if (id === undefined) return;
+    const result = notifications.getValue();
+
+    // Remove notification with the same id.
+    // These are notifications that are meant to replace other notifications
+    // (e.g., currently playing song).
+    const replacedNotification = result.get(id);
+    if (replacedNotification !== undefined) {
+      result.delete(id);
+      replacedNotification.destroy();
+    }
 
     const info = notificationService.getNotification(id);
     if (info === undefined) return;
 
     const notification = Notification(info);
-    notifications.setValue(notifications.getValue().set(id, notification));
+    notifications.setValue(result.set(id, notification));
     self.children = [notification, ...self.children];
   };
 
@@ -62,7 +72,7 @@ const NotificationList = (notifications: NotificationMap) => {
             (_: unknown, id: number | undefined) => notify(self, id),
             "notified",
           )
-          .hook(notificationService, (_: unknown, id: number | undefined) => remove(id), "closed");
+          .hook(notificationService, (_: unknown, id: number | undefined) => remove(id), "closed")
       },
     }),
   });
