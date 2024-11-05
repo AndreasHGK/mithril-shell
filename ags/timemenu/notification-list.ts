@@ -14,7 +14,10 @@ const Placeholder = (notifications: NotificationMap) =>
     vexpand: true,
     hpack: "center",
     vpack: "center",
-    children: [Widget.Icon("notifications-disabled-symbolic"), Widget.Label("Your inbox is empty")],
+    children: [
+      Widget.Icon({ className: "icon", icon: "notifications-disabled-symbolic" }),
+      Widget.Label("Your inbox is empty"),
+    ],
   });
 
 const NotificationList = (notifications: NotificationMap) => {
@@ -72,7 +75,7 @@ const NotificationList = (notifications: NotificationMap) => {
             (_: unknown, id: number | undefined) => notify(self, id),
             "notified",
           )
-          .hook(notificationService, (_: unknown, id: number | undefined) => remove(id), "closed")
+          .hook(notificationService, (_: unknown, id: number | undefined) => remove(id), "closed");
       },
     }),
   });

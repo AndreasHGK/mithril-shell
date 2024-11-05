@@ -394,4 +394,16 @@ window.darkened {
   min-height: 26em;
 
   border-radius: 1.5em;
+
+  .placeholder {
+
+    >.icon,
+    >label {
+      font-size: 1.22em;
+    }
+
+    >.icon {
+      margin-right: 1em;
+    }
+  }
 }
