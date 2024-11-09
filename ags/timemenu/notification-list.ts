@@ -61,6 +61,7 @@ const NotificationList = (notifications: NotificationMap) => {
     vexpand: true,
     hscroll: "never",
     child: Widget.Box({
+      className: "notifications",
       vertical: true,
       children: notificationService.notifications.map((info) => {
         const notification = Notification(info);

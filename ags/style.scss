@@ -407,5 +407,33 @@ window.darkened {
     }
   }
 
-  scrollable {}
+  .notifications {
+    @include space-between-y(0.75em);
+
+    .notification>.event-box {
+      border-radius: 0.5em;
+      border: 1px solid scale-color($background1, $lightness: 7.5%);
+      background-color: $surface0;
+
+      &:hover {
+        background-color: hover-color($surface0)
+      }
+
+      .content {
+        padding: 0.5em;
+
+        $icon-width: 4em;
+
+        .icon {
+          margin-right: 1em;
+          min-width: $icon-width;
+          min-height: $icon-width;
+
+          >.image {
+            font-size: $icon-width;
+          }
+        }
+      }
+    }
+  }
 }

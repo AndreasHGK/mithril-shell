@@ -8,7 +8,6 @@ const iconAsOption = (icon: string): Option<string> => {
 
 export default ({ app_entry, app_icon, image }: NotificationInfo) => {
   if (image !== undefined) {
-    print("Image provided, using image.");
     return Widget.Box({
       className: "icon",
       css: `
@@ -29,6 +28,7 @@ export default ({ app_entry, app_icon, image }: NotificationInfo) => {
     className: "icon",
     child: Widget.Icon({
       icon,
+      className: "image",
       hpack: "center",
       vpack: "center",
       hexpand: true,
