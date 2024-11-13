@@ -82,6 +82,17 @@ in
         };
       };
 
+      bar.modules = {
+        statusIndicators.batteryPercentage = mkOption {
+          type = types.bool;
+          default = true;
+          description = ''
+            Shows the current battery percentage in the bar. Set to false to disable. The battery
+            percentage is never shown if no battery is detected.
+          '';
+        };
+      };
+
       lockCommand = mkOption {
         type = types.nullOr types.str;
         default = null;

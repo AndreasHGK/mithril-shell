@@ -15,6 +15,13 @@ export let config = {
   animations: {
     activeWorkspace: opt<"simple" | "smooth">("simple"),
   },
+  bar: {
+    modules: {
+      statusIndicators: {
+        batteryPercentage: opt<boolean>(true),
+      },
+    },
+  },
   lockCommand: opt<string | null>(null),
   minWorkspaces: opt<number>(3),
   popups: {

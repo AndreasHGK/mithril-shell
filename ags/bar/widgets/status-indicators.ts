@@ -1,5 +1,7 @@
 import { volumeIcon } from "lib/icons.js";
+import { config } from "lib/settings.js";
 import type { Icon } from "lib/types";
+import { conditionalChildren } from "lib/widgets.js";
 import type Gtk from "types/@girs/gtk-3.0/gtk-3.0.js";
 import type { Binding } from "types/service.js";
 import { BarWidget } from "../bar-widget.js";
@@ -69,6 +71,13 @@ export const StatusIndicators = () => {
         StatusIndicator({
           icon: battery.bind("icon_name"),
           visible: battery.bind("available"),
+          children: conditionalChildren([
+            config?.bar?.modules?.statusIndicators?.batteryPercentage
+              ? Widget.Label({
+                  label: battery.bind("percent").as((p) => `${p}%`),
+                })
+              : null,
+          ]),
         }),
 
         StatusIndicator({

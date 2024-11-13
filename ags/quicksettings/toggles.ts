@@ -3,8 +3,10 @@ import type { Icon } from "lib/types";
 import night_light from "services/night-light";
 import type { Binding } from "types/service";
 
+const battery = await Service.import("battery");
 const bluetooth = await Service.import("bluetooth");
 const network = await Service.import("network");
+const power_profiles = await Service.import("powerprofiles");
 
 /**
  * Big pill shaped buttons arranged in a grid in the quicksettings menu.
@@ -233,6 +235,33 @@ const toggle_buttons = {
       night_light.enabled = active;
     },
   }),
+
+  powerSaver: ToggleButton({
+    visible: Utils.merge(
+      [battery.bind("available"), power_profiles.bind("profiles")],
+      (has_battery, profiles) => {
+        if (!has_battery) {
+          return false;
+        }
+
+        return (
+          profiles.filter(
+            (profile) => profile.Profile === "power-saver" || profile.Profile === "balanced",
+          ).length >= 2
+        );
+      },
+    ),
+    icon: power_profiles.bind("icon_name"),
+    label: "Power Saver",
+    active: power_profiles.bind("active_profile").as((active) => active === "power-saver"),
+    onToggled({ active }) {
+      if (active) {
+        power_profiles.active_profile = "power-saver";
+      } else {
+        power_profiles.active_profile = "balanced";
+      }
+    },
+  }),
 };
 
 export const Toggles = () =>
@@ -257,6 +286,7 @@ export const Toggles = () =>
           toggle_buttons.wifi,
           toggle_buttons.bluetooth,
           toggle_buttons.vpn,
+          toggle_buttons.powerSaver,
           toggle_buttons.nightLight,
         ];
 
