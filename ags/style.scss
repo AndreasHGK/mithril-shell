@@ -416,9 +416,11 @@ window.darkened {
         border-radius: 0.5em;
         border: 1px solid scale-color($background1, $lightness: 7.5%);
         background-color: $surface0;
+        box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
 
         &:hover {
-          background-color: hover-color($surface0)
+          box-shadow: inset 1px 1px 1px 1px $surface0;
+          background-color: hover-color($surface0);
         }
 
         .content {

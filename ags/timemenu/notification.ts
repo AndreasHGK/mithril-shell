@@ -5,6 +5,8 @@ import NotificationIcon from "./icon";
 import { formatTime } from "lib/format";
 
 export default (notification: NotificationInfo) => {
+  const closeButtonVisible = Variable(false);
+
   const content = Widget.Box({
     class_name: "content",
     children: [
@@ -24,29 +26,30 @@ export default (notification: NotificationInfo) => {
                 truncate: "end",
                 wrap: true,
                 label: notification.summary.trim(),
-                use_markup: true,
+                useMarkup: true,
               }),
               Widget.Label({
-                class_name: "time",
+                className: "time",
                 vpack: "start",
                 label: formatTime(notification.time),
               }),
               Widget.Button({
-                class_name: "close-button",
+                className: "close-button",
+                visible: closeButtonVisible.bind(),
                 vpack: "start",
                 child: Widget.Icon("window-close-symbolic"),
-                on_clicked: notification.close,
+                onClicked: notification.close,
               }),
             ],
           }),
           Widget.Label({
-            class_name: "description",
+            className: "description",
             hexpand: true,
-            use_markup: true,
+            useMarkup: true,
             xalign: 0,
             justification: "left",
             label: notification.body.trim(),
-            max_width_chars: 24,
+            maxWidthChars: 24,
             wrap: true,
           }),
         ],
@@ -60,11 +63,11 @@ export default (notification: NotificationInfo) => {
         transition: "slide_down",
         child: Widget.EventBox({
           child: Widget.Box({
-            class_name: "actions horizontal",
+            className: "actions horizontal",
             children: notification.actions.map((action) =>
               Widget.Button({
-                class_name: "action-button",
-                on_clicked: () => notification.invoke(action.id),
+                className: "action-button",
+                onClicked: () => notification.invoke(action.id),
                 hexpand: true,
                 child: Widget.Label(action.label),
               }),
@@ -79,14 +82,14 @@ export default (notification: NotificationInfo) => {
     child: Widget.EventBox({
       className: "event-box",
       vexpand: false,
-      on_primary_click: notification.dismiss,
-      on_hover() {
+      onPrimaryClick: notification.dismiss,
+      onHover() {
         if (actionsbox) actionsbox.reveal_child = true;
+        closeButtonVisible.setValue(true);
       },
-      on_hover_lost() {
-        if (actionsbox) actionsbox.reveal_child = true;
-
-        notification.dismiss();
+      onHoverLost() {
+        if (actionsbox) actionsbox.reveal_child = false;
+        closeButtonVisible.setValue(false);
       },
       child: Widget.Box({
         vertical: true,
