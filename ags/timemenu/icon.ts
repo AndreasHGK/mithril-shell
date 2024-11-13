@@ -9,7 +9,7 @@ const iconAsOption = (icon: string): Option<string> => {
 export default ({ app_entry, app_icon, image }: NotificationInfo) => {
   if (image !== undefined) {
     return Widget.Box({
-      className: "icon",
+      className: "image",
       css: `
         background-image: url("${image}");
         background-size: cover;
@@ -25,10 +25,10 @@ export default ({ app_entry, app_icon, image }: NotificationInfo) => {
     .unwrapOr(""); // TODO: Add some fallback icon here.;
 
   return Widget.Box({
-    className: "icon",
+    className: "image",
     child: Widget.Icon({
       icon,
-      className: "image",
+      className: "icon",
       hpack: "center",
       vpack: "center",
       hexpand: true,

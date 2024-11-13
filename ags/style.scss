@@ -395,42 +395,45 @@ window.darkened {
 
   border-radius: 1.5em;
 
-  .placeholder {
-
-    >.icon,
-    >label {
-      font-size: 1.22em;
-    }
-
-    >.icon {
-      margin-right: 1em;
-    }
-  }
-
   .notifications {
-    @include space-between-y(0.75em);
 
-    .notification>.event-box {
-      border-radius: 0.5em;
-      border: 1px solid scale-color($background1, $lightness: 7.5%);
-      background-color: $surface0;
+    .placeholder {
 
-      &:hover {
-        background-color: hover-color($surface0)
+      >.icon,
+      >label {
+        font-size: 1.22em;
       }
 
-      .content {
-        padding: 0.5em;
+      >.icon {
+        margin-right: 1em;
+      }
+    }
 
-        $icon-width: 4em;
+    .list {
+      @include space-between-y(0.75em);
 
-        .icon {
-          margin-right: 1em;
-          min-width: $icon-width;
-          min-height: $icon-width;
+      .notification>.event-box {
+        border-radius: 0.5em;
+        border: 1px solid scale-color($background1, $lightness: 7.5%);
+        background-color: $surface0;
 
-          >.image {
-            font-size: $icon-width;
+        &:hover {
+          background-color: hover-color($surface0)
+        }
+
+        .content {
+          padding: 0.5em;
+
+          .image {
+            $icon-width: 4em;
+
+            margin-right: 1em;
+            min-width: $icon-width;
+            min-height: $icon-width;
+
+            >.icon {
+              font-size: $icon-width;
+            }
           }
         }
       }

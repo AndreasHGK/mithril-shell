@@ -61,7 +61,7 @@ const NotificationList = (notifications: NotificationMap) => {
     vexpand: true,
     hscroll: "never",
     child: Widget.Box({
-      className: "notifications",
+      className: "list",
       vertical: true,
       children: notificationService.notifications.map((info) => {
         const notification = Notification(info);
@@ -85,6 +85,7 @@ export default () => {
   // Keep track of registered notifications.
   const notifications: NotificationMap = Variable(new Map());
   return Widget.Box({
+    className: "notifications",
     children: [Placeholder(notifications), NotificationList(notifications)],
   });
 };
