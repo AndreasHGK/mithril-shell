@@ -1,5 +1,5 @@
-import NotificationList from "./notification-list";
 import { PopupWindow } from "window";
+import NotificationList from "./notification-list";
 
 export default () =>
   PopupWindow({

@@ -35,10 +35,6 @@ export class Some<T> extends Option<T> {
 }
 
 export class None<T> extends Option<T> {
-  constructor() {
-    super();
-  }
-
   orElse(fn: () => Option<T>): Option<T> {
     return fn();
   }

@@ -1,6 +1,6 @@
 import type { Notification as NotificationInfo } from "types/service/notifications";
 
-import { Option, Some, None } from "lib/option-rs";
+import { None, Option, Some } from "lib/option-rs";
 
 const iconAsOption = (icon: string): Option<string> => {
   return Utils.lookUpIcon(icon) ? new Some(icon) : new None();
