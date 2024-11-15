@@ -398,14 +398,13 @@ window.darkened {
   .notifications {
 
     .placeholder {
+      @include space-between-y(1em);
 
       >.icon,
       >label {
-        font-size: 1.22em;
-      }
-
-      >.icon {
-        margin-right: 1em;
+        color: mix($background1, $text, $weight: 25%);
+        font-size: 1.25em;
+        font-weight: bold;
       }
     }
 

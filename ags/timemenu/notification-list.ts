@@ -12,11 +12,16 @@ const Placeholder = (notifications: NotificationMap) =>
     className: "placeholder",
     hexpand: true,
     vexpand: true,
+    vertical: true,
     hpack: "center",
     vpack: "center",
     children: [
-      Widget.Icon({ className: "icon", icon: "notifications-disabled-symbolic" }),
-      Widget.Label("Your inbox is empty"),
+      Widget.Icon({
+        className: "icon",
+        icon: "org.gnome.Settings-notifications-symbolic",
+        size: 80,
+      }),
+      Widget.Label("No notifications"),
     ],
   });
 
