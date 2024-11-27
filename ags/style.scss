@@ -346,7 +346,6 @@ window.darkened {
       }
     }
   }
-
 }
 
 .osd-popup {
@@ -383,6 +382,62 @@ window.darkened {
         }
       }
 
+    }
+  }
+}
+
+.timemenu {
+  @include space-between-y(1.5em);
+
+  padding: 1em;
+  min-width: 28em;
+  min-height: 26em;
+
+  border-radius: 1.5em;
+
+  .notifications {
+
+    .placeholder {
+      @include space-between-y(1em);
+
+      >.icon,
+      >label {
+        color: mix($background1, $text, $weight: 25%);
+        font-size: 1.25em;
+        font-weight: bold;
+      }
+    }
+
+    .list {
+      @include space-between-y(0.75em);
+
+      .notification>.event-box {
+        border-radius: 0.5em;
+        border: 1px solid scale-color($background1, $lightness: 7.5%);
+        background-color: $surface0;
+        box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+
+        &:hover {
+          box-shadow: inset 1px 1px 1px 1px $surface0;
+          background-color: hover-color($surface0);
+        }
+
+        .content {
+          padding: 0.5em;
+
+          .image {
+            $icon-width: 4em;
+
+            margin-right: 1em;
+            min-width: $icon-width;
+            min-height: $icon-width;
+
+            >.icon {
+              font-size: $icon-width;
+            }
+          }
+        }
+      }
     }
   }
 }
