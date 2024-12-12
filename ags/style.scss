@@ -438,10 +438,15 @@ window.darkened {
               font-size: 12px;
             }
 
-            .close-button {
-              border-radius: 9999px;
-              background-color: $surface0;
-              padding: 0.3em;
+            .buttons {
+              margin-top: -0.3em;
+              margin-right: -0.3em;
+
+              .close-button {
+                border-radius: 9999px;
+                background-color: $surface0;
+                padding: 0.325em;
+              }
             }
           }
 

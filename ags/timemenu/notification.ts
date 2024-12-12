@@ -31,13 +31,18 @@ export default (notification: NotificationInfo) => {
             vpack: "start",
             label: formatTime(notification.time),
           }),
-          Widget.Button({
-            className: "close-button",
-            hexpand: true,
+          Widget.Box({
+            className: "buttons",
             vpack: "center",
             hpack: "end",
-            child: Widget.Icon("window-close-symbolic"),
-            onClicked: notification.close,
+            hexpand: true,
+            children: [
+              Widget.Button({
+                className: "close-button",
+                child: Widget.Icon("window-close-symbolic"),
+                onClicked: notification.close,
+              }),
+            ],
           }),
         ]),
       }),
