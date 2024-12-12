@@ -3,56 +3,96 @@ import type { Notification as NotificationInfo } from "types/service/notificatio
 import NotificationIcon from "./icon";
 
 import { formatTime } from "lib/format";
+import { conditionalChildren } from "lib/widgets";
 
 export default (notification: NotificationInfo) => {
-  const closeButtonVisible = Variable(false);
-
   const content = Widget.Box({
-    class_name: "content",
+    className: "notification-inner",
+    vertical: true,
     children: [
-      NotificationIcon(notification),
       Widget.Box({
+        className: "header",
         hexpand: true,
-        vertical: true,
-        children: [
+        vertical: false,
+        children: conditionalChildren([
+          notification.app_icon
+            ? Widget.Icon({
+                className: "app-icon",
+                vpack: "start",
+                icon: notification.app_icon,
+                size: 12,
+              })
+            : null,
+          Widget.Label({
+            className: "app-name",
+            vpack: "start",
+            label: notification.app_name,
+          }),
+          Widget.Label({
+            className: "time",
+            vpack: "start",
+            label: formatTime(notification.time),
+          }),
+          Widget.Button({
+            className: "close-button",
+            hexpand: true,
+            vpack: "center",
+            hpack: "end",
+            child: Widget.Icon("window-close-symbolic"),
+            onClicked: notification.close,
+          }),
+        ]),
+      }),
+      Widget.Box({
+        class_name: "content",
+        vertical: false,
+        children: conditionalChildren([
+          notification.image
+            ? Widget.Box({
+                vertical: true,
+                children: [
+                  Widget.Box({
+                    className: "image",
+                    vexpand: false,
+                    css: `background-image: url("${notification.image}");`,
+                  }),
+                  // Needed so the icon does not get stretched vertically.
+                  Widget.Box({
+                    vexpand: true,
+                  }),
+                ],
+              })
+            : null,
           Widget.Box({
+            vertical: true,
+            hexpand: true,
+            hpack: "start",
+            className: "text",
+            vpack: "center",
             children: [
               Widget.Label({
                 className: "title",
-                xalign: 0,
+                hpack: "start",
                 justification: "left",
-                hexpand: true,
-                maxWidthChars: 24,
+                xalign: 0,
                 truncate: "end",
+                hexpand: true,
                 wrap: true,
                 label: notification.summary.trim(),
                 useMarkup: true,
               }),
               Widget.Label({
-                className: "time",
-                vpack: "start",
-                label: formatTime(notification.time),
-              }),
-              Widget.Button({
-                className: "close-button",
-                visible: closeButtonVisible.bind(),
-                vpack: "start",
-                child: Widget.Icon("window-close-symbolic"),
-                onClicked: notification.close,
+                className: "description",
+                justification: "left",
+                xalign: 0,
+                useMarkup: true,
+                hpack: "start",
+                label: notification.body.trim(),
+                wrap: true,
               }),
             ],
           }),
-          Widget.Label({
-            className: "description",
-            hexpand: true,
-            useMarkup: true,
-            xalign: 0,
-            justification: "left",
-            label: notification.body.trim(),
-            maxWidthChars: 24,
-            wrap: true,
-          }),
-        ],
+        ]),
       }),
     ],
   });
@@ -83,14 +123,6 @@ export default (notification: NotificationInfo) => {
       className: "event-box",
       vexpand: false,
       onPrimaryClick: notification.dismiss,
-      onHover() {
-        if (actionsbox) actionsbox.reveal_child = true;
-        closeButtonVisible.setValue(true);
-      },
-      onHoverLost() {
-        if (actionsbox) actionsbox.reveal_child = false;
-        closeButtonVisible.setValue(false);
-      },
       child: Widget.Box({
         vertical: true,
         children: actionsbox ? [content, actionsbox] : [content],

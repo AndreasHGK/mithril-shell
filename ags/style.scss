@@ -393,8 +393,6 @@ window.darkened {
   min-width: 28em;
   min-height: 26em;
 
-  border-radius: 1.5em;
-
   .notifications {
 
     .placeholder {
@@ -412,30 +410,76 @@ window.darkened {
       @include space-between-y(0.75em);
 
       .notification>.event-box {
-        border-radius: 0.5em;
-        border: 1px solid scale-color($background1, $lightness: 7.5%);
-        background-color: $surface0;
-        box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25);
+        border-radius: 1em;
+        background-color: $background2;
 
-        &:hover {
-          box-shadow: inset 1px 1px 1px 1px $surface0;
-          background-color: hover-color($surface0);
-        }
+        .notification-inner {
+          padding: 1em;
+          @include space-between-y(0.25em);
 
-        .content {
-          padding: 0.5em;
+          .header {
+            @include space-between-x(0.75em);
 
-          .image {
-            $icon-width: 4em;
+            .app-icon {
+              color: mix($background2, $text, 15%);
+              font-weight: bold;
+              font-size: 13px;
+            }
 
-            margin-right: 1em;
-            min-width: $icon-width;
-            min-height: $icon-width;
+            .app-name {
+              color: mix($background2, $text, 15%);
+              font-weight: bold;
+              font-size: 13px;
+            }
 
-            >.icon {
-              font-size: $icon-width;
+            .time {
+              padding-top: 0.15em;
+              color: mix($background2, $text, 25%);
+              font-size: 12px;
+            }
+
+            .close-button {
+              border-radius: 9999px;
+              background-color: $surface0;
+              padding: 0.3em;
             }
           }
+
+          .content {
+            @include space-between-x(0.75em);
+
+            .image {
+              $icon-width: 3.25em;
+
+              min-width: $icon-width;
+              min-height: $icon-width;
+
+              border-radius: 9999px;
+
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center;
+            }
+
+            .text {
+              @include space-between-y(0.4em);
+
+              .title {
+                font-weight: bold;
+              }
+
+              .description {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        /* box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25); */
+
+        &:hover {
+          /* box-shadow: inset 1px 1px 1px 1px $s; */
+          /* background-color: hover-color($background2); */
         }
       }
     }
