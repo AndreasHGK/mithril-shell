@@ -1,7 +1,5 @@
 import type { Notification as NotificationInfo } from "types/service/notifications";
 
-import NotificationIcon from "./icon";
-
 import { formatTime } from "lib/format";
 import { conditionalChildren } from "lib/widgets";
 
