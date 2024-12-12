@@ -102,35 +102,14 @@ export default (notification: NotificationInfo) => {
     ],
   });
 
-  const actionsbox =
-    notification.actions.length > 0
-      ? Widget.Revealer({
-          transition: "slide_down",
-          child: Widget.EventBox({
-            child: Widget.Box({
-              className: "actions horizontal",
-              children: notification.actions.map((action) =>
-                Widget.Button({
-                  className: "action-button",
-                  onClicked: () => notification.invoke(action.id),
-                  hexpand: true,
-                  child: Widget.Label(action.label),
-                }),
-              ),
-            }),
-          }),
-        })
-      : null;
-
   return Widget.Box({
     className: `notification ${notification.urgency}`,
     child: Widget.EventBox({
       className: "event-box",
       vexpand: false,
-      onPrimaryClick: notification.dismiss,
       child: Widget.Box({
         vertical: true,
-        children: actionsbox ? [content, actionsbox] : [content],
+        children: [content],
       }),
     }),
   });
