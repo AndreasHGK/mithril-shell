@@ -71,6 +71,7 @@ export default (notification: NotificationInfo) => {
               Widget.Label({
                 className: "title",
                 hpack: "start",
+                vpack: "end",
                 justification: "left",
                 xalign: 0,
                 truncate: "end",
@@ -85,6 +86,7 @@ export default (notification: NotificationInfo) => {
                 xalign: 0,
                 useMarkup: true,
                 hpack: "start",
+                vpack: "end",
                 label: notification.body.trim(),
                 wrap: true,
               }),
