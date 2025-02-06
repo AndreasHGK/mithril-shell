@@ -11,5 +11,5 @@ export const Time = () =>
       className: "time",
       label: time.bind(),
     }),
-    onClicked: () => Utils.execAsync("swaync-client -t"),
+    on_clicked: () => App.toggleWindow("timemenu"),
   });
