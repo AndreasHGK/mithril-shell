@@ -346,7 +346,6 @@ window.darkened {
       }
     }
   }
-
 }
 
 .osd-popup {
@@ -383,6 +382,112 @@ window.darkened {
         }
       }
 
+    }
+  }
+}
+
+.timemenu {
+  @include space-between-y(1.5em);
+
+  padding: 1em;
+  min-width: 28em;
+  min-height: 26em;
+
+  .notifications {
+
+    .placeholder {
+      @include space-between-y(1em);
+
+      >.icon,
+      >label {
+        color: mix($background1, $text, $weight: 25%);
+        font-size: 1.25em;
+        font-weight: bold;
+      }
+    }
+
+    .list {
+      @include space-between-y(0.75em);
+
+      .notification>.event-box {
+        border-radius: 1em;
+        background-color: $background2;
+
+        .notification-inner {
+          padding: 1em;
+          @include space-between-y(0.25em);
+
+          .header {
+            @include space-between-x(0.75em);
+
+            .app-icon {
+              color: mix($background2, $text, 15%);
+              font-weight: bold;
+              font-size: 13px;
+            }
+
+            .app-name {
+              color: mix($background2, $text, 15%);
+              font-weight: bold;
+              font-size: 13px;
+            }
+
+            .time {
+              padding-top: 0.15em;
+              color: mix($background2, $text, 25%);
+              font-size: 12px;
+            }
+
+            .buttons {
+              margin-top: -0.3em;
+              margin-right: -0.3em;
+
+              .close-button {
+                border-radius: 9999px;
+                background-color: $surface0;
+                padding: 0.325em;
+              }
+            }
+          }
+
+          .content {
+            @include space-between-x(0.75em);
+
+            .image {
+              $icon-width: 3.25em;
+
+              min-width: $icon-width;
+              min-height: $icon-width;
+
+              border-radius: 9999px;
+
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center;
+            }
+
+            .text {
+              @include space-between-y(0.4em);
+
+              .title {
+                font-weight: bold;
+                font-size: 14px;
+              }
+
+              .description {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        /* box-shadow: 0 0.1em 0.25em rgba(20, 20, 20, 0.25); */
+
+        &:hover {
+          /* box-shadow: inset 1px 1px 1px 1px $s; */
+          /* background-color: hover-color($background2); */
+        }
+      }
     }
   }
 }
