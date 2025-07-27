@@ -32,6 +32,7 @@ export let config = {
       enable: opt<boolean>(true),
     },
   },
+  development: opt<boolean>(false),
 };
 
 /**
